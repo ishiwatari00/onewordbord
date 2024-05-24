@@ -35,11 +35,10 @@
                     <p>{{ $thread->oneword }}</p>
                     </tr>
                 @endforeach
+                {{ $threads->links('vendor.pagination.default') }}
             @endif
             
         </header>
-
-            {{ $threads->links('vendor.pagination.default') }}
 
 
     </body>

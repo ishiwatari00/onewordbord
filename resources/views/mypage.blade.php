@@ -10,7 +10,7 @@
     
     <head>
         <a href = "{{ url('/home') }}" >Home</a>
-        @if({{ session('userid') }} = !null)
+        @if(session('userid') != null)
         {{ session('username') }}でログイン中
         @endif
         <meta charset="UTF-8">

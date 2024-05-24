@@ -7,6 +7,7 @@
         color: green;
         }
     </style>
+    
     <head>
         <a href = "{{ url('/home') }}" >Home</a>
         {{ session('username') }}でログイン中

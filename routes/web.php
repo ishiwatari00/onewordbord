@@ -26,6 +26,6 @@ Route::get('/register', function () {
 
 Route::post('/insert', 'App\Http\Controllers\UserdataController@register'); //アカウントDB登録
 
-Route::post('/loginkeep', 'App\Http\Controllers\UserdataController@loginkeep'); //ログイン
+Route::post('/loginkeep', 'App\Http\Controllers\LoginController@loginkeep'); //ログイン
 
 Route::get('/logout', 'App\Http\Controllers\UserdataController@logout'); //ログアウツ

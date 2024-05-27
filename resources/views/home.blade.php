@@ -23,17 +23,60 @@
         <header>
             <h1>掲示板</h1>
             @if(session('userid') != null)
+                <table>
                 <form method = "post" action = "tweet">
                 @csrf
-                <input type = "text" name = "oneword"></input>
-                <input type = "submit"></input>
+                <tr>
+                    <td>name :</td>
+                    <td><input type = "text" name = "bordname"></input></td>
+                </tr>
+
+                <tr>
+                    <td>gender :</td>
+                    <td>
+                        <input type = "radio" name = "gender" value = "♂">♂</input>
+                        <input type = "radio" name = "gender" value = "♀">♀</input>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>address :</td>
+                    <td>
+                        <select name = "address">
+                        <option value ="東日本">東日本</option>
+                        <option value ="西日本">西日本</option>
+                        <option value ="その他">その他</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>oneword :</td>
+                    <td>
+                        <textarea name = "oneword" rows="5" cols="40"></textarea>
+                    </td>
+                </tr>
+                    
+                <tr>
+                    <td>
+                        <input type = "submit"></input>
+                    </td>
+                </tr>
+
                 <input type = "hidden" name = "userid" value = "{{ session('userid') }}"></input>
                 </form>
+                </table>
 
                 @foreach($threads as $thread)
-                    <p>{{ $thread->id }}&emsp;名前 : <span class = "span">以下、名無しにかわりましてVIPがお送りします。</span></p>
-                    <p>{{ $thread->oneword }}</p>
-                    </tr>
+                    <p>
+                        {{ $thread->id }}&emsp;
+                        名前 : <span class = "span">{{ $thread->bordname }}</span>&emsp;
+                        {{ $thread->gender }}&emsp;
+                        {{ $thread->address }}
+                    </p>
+                    <p>
+                        {{ $thread->oneword }}
+                    </p>
                 @endforeach
                 {{ $threads->links('vendor.pagination.default') }}
             @endif

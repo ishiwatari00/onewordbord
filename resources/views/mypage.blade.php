@@ -22,15 +22,18 @@
                     @foreach($threads as $thread)
                     <form method = "get">
                     @csrf
-                    <tr>
-                    <td>{{ $thread->id }}&emsp;名前 : <span class = "span">以下、名無しにかわりましてVIPがお送りします。</span></td>
-                    <td><input type = "submit" value = "編集" formaction = "/edit"></input></td>
-                    <td><input type = "submit" value = "削除" formaction = "/deletecheck"></input></td>
-                    </tr>
-                    <tr>
-                    <td>{{ $thread->oneword }}</td>
-                    <td><input type = "hidden" name = "id" value = "{{ $thread->id }}"></input><td>
-                    </tr>
+                    <p>
+                        {{ $thread->id }}&emsp;
+                        名前 : <span class = "span">{{ $thread->bordname }}</span>&emsp;
+                        {{ $thread->gender }}&emsp;
+                        {{ $thread->address }}
+                        <input type = "submit" value = "編集" formaction = "/edit"></input>
+                        <input type = "submit" value = "削除" formaction = "/deletecheck"></input>
+                        <input type = "hidden" value = "{{ $thread->id }}" name = "id"></input>
+                    </p>
+                    <p>
+                        {{ $thread->oneword }}
+                    </p>
                     </form>
                     @endforeach
                 </table>

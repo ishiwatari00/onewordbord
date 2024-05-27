@@ -1,9 +1,14 @@
 <html>
+    <style>
+        .background{
+        background: #DCDCDC;
+        }
+    </style>
     <head>
         <a href = "{{ url('/home') }}" >Home</a>
         <meta charset="UTF-8">
     </head>
-    <body>
+    <body class = "background">
         <header>
             <h1>ログイン情報</h1>
         </header>
@@ -15,8 +20,8 @@
                     <td><input type = "text" name = "username"></input></td>
                 </tr>
                 <tr>
-                    <td>pass</td>
-                    <td><input type = "text" name = "pass"></input></td>
+                    <td>password</td>
+                    <td><input type = "text" name = "password"></input></td>
                 </tr>
                 </table>
                 <input type = "submit" value = "ログイン"></input>

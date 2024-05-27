@@ -23,25 +23,52 @@ class ThreadController extends Controller
 
     public function tweets(Request $request){ //スレッド投稿した時のDB登録
 
-    $tweet = new Thread();
-    $tweet->oneword = $request->input('oneword');
-    $tweet->userid = $request->input('userid');
-    $tweet->save();
+        $validator = Validator::make($request->all(),[
+            'bordname' => 'required|max:30',
+            'gender' => 'required',
+            'address' => 'required',
+            'oneword' => 'required|max:100'
+        ]);
 
-    return redirect('home');
-    }
+        if ($validator->fails()) {
+            return redirect('home');
+        }
+
+        $tweet = new Thread();
+        $tweet->bordname = $request->input('bordname');
+        $tweet->gender = $request->input('gender');
+        $tweet->address = $request->input('address');
+        $tweet->oneword = $request->input('oneword');
+        $tweet->userid = $request->input('userid');
+        $tweet->save();
+
+        return redirect('home');
+        }
 
     public function edit(Request $request){  //セッションにＩＤ入れる
         $id = $request->input('id');
-        $request->session()->put(['id'=>$request->id]);  
+        $request->session()->put(['id'=>$id]);  
         return view('edit');
     }
 
-    public function editcomp(Request $request){  //編集ページにID入れる
+    public function editcomp(Request $request){  //編集
         
-        Thread::
-            where([['id', '=', $request['id']]])
-            ->update(['oneword' => $request['oneword']]);
+        $validator = Validator::make($request->all(),[
+            'bordname' => 'required|max:30',
+            'gender' => 'required',
+            'address' => 'required',
+            'oneword' => 'required|max:100'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('edit');
+        }
+
+        Thread::where([['id', '=', $request['id']]])
+            ->update(['bordname' => $request['bordname'],
+                    'gender' => $request['gender'],
+                    'address' => $request['address'],
+                    'oneword' => $request['oneword']]);
 
         return redirect('mypage');
     }

@@ -5,7 +5,7 @@
         }
     </style>
     <head>
-        <a href = "{{ url('/home') }}" >Home</a>
+        <a href = "{{ url('/register') }}" >register</a>
         <meta charset="UTF-8">
     </head>
     <body class = "background">

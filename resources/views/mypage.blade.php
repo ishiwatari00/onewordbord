@@ -10,13 +10,9 @@
     
     <head>
         <a href = "{{ url('/home') }}" >Home</a>
-        @if(Auth::check())
-        {{ Auth::id() }}でログイン中
-        @endif
         <meta charset="UTF-8">
     </head>
     <body class = "background">
-    @if(Auth::check())
         <header>
             <h1>自分の投稿</h1>
                 <table>
@@ -40,8 +36,5 @@
                 </table>
                 {{ $threads->links('vendor.pagination.default') }}
         </header>
-        
-        @endif
-
     </body>
 </html>

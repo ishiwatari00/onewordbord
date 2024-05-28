@@ -9,13 +9,10 @@
     </style>
     <head>
         <a href = "{{ url('/home') }}" >Home</a>
-        @if(Auth::check())
         {{ Auth::id() }}でログイン中
-        @endif
         <meta charset="UTF-8">
     </head>
     <body class = "background">
-        @if(Auth::check())
         <header>
             <h1>削除してよろしいですか？</h1>
                 <table>
@@ -40,9 +37,5 @@
                     @endforeach
                 </table>
         </header>
-        @endif
-        
-
-
     </body>
 </html>

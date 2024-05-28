@@ -8,20 +8,16 @@
         }
     </style>
     <head>
-        @if(Auth::check())
+        <a href = "{{ url('/login') }}" >login</a>  <!-- 後で消す  -->
+        <a href = "{{ url('/register') }}" >register</a> <!-- 後で消す  -->
         <a href = "{{ url('/home') }}" >Home</a>
         <a href = "{{ url('/mypage') }}" >mypage</a>
         <a href = "{{ url('/logout') }}" >logout</a>
         {{ Auth::id() }}でログイン中
-        @else
-        <a href = "{{ url('/login') }}" >login</a>
-        <a href = "{{ url('/register') }}" >register</a>
-        @endif
         <meta charset="UTF-8">
     </head>
     <body class = "background">
         <header>
-        @if(Auth::check())
             <h1>掲示板</h1>
                 <table>
                 <form method = "post" action = "tweet">
@@ -78,7 +74,6 @@
                     </p>
                 @endforeach
                 {{ $threads->links('vendor.pagination.default') }}
-            @endif
             
         </header>
 

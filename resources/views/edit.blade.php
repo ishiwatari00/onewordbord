@@ -6,19 +6,16 @@
     </style>
     <head>
         <a href = "{{ url('/home') }}" >Home</a>
-        @if(Auth::check())
         <a href = "{{ url('/mypage') }}" >mypage</a>
         {{ Auth::id() }}でログイン中
-        @endif
         <meta charset="UTF-8">
     </head>
     <body class = "background">
-        @if(Auth::check())
         <header>
             <h1>編集</h1>
         </header>
         <table>
-                <form method = "post" action = "editcomp">
+                <form method = "post">
                 @csrf
                 <tr>
                     <td>name :</td>
@@ -53,11 +50,11 @@
                     
                 <tr>
                     <td>
-                        <input type = "submit" value = "編集"></input>
+                        <input type = "submit" value = "戻る" formaction = "edit"></input>
+                        <input type = "submit" value = "編集" formaction = "editcomp"></input>
                     </td>
                 </tr>
                 <input type = "hidden" name = "id" value = "{{ session('id') }}"></input>
             </form>
-        @endif
     </body>
 </html>

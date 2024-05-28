@@ -28,7 +28,7 @@
                 @csrf
                 <tr>
                     <td>name :</td>
-                    <td><input type = "text" name = "bordname"></input></td>
+                    <td><input type = "text" name = "bordname" value  = "以下、名無しに代わりましてVIPがお送りします。" size = "48px"></input></td>
                 </tr>
 
                 <tr>
@@ -53,7 +53,7 @@
                 <tr>
                     <td>oneword :</td>
                     <td>
-                        <textarea name = "oneword" rows="5" cols="40"></textarea>
+                        <textarea name = "oneword" rows="5" cols="50"></textarea>
                     </td>
                 </tr>
                     
@@ -62,8 +62,6 @@
                         <input type = "submit"></input>
                     </td>
                 </tr>
-
-                <input type = "hidden" name = "userid" value = "{{ session('userid') }}"></input>
                 </form>
                 </table>
 
@@ -72,7 +70,8 @@
                         {{ $thread->id }}&emsp;
                         名前 : <span class = "span">{{ $thread->bordname }}</span>&emsp;
                         {{ $thread->gender }}&emsp;
-                        {{ $thread->address }}
+                        {{ $thread->address }}&emsp;
+                        {{ $thread->created_at }}
                     </p>
                     <p>
                         {{ $thread->oneword }}

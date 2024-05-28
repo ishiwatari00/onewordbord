@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Thread;
-use Validator;
+use Illuminate\Support\Facades\Auth;
 
 class ThreadController extends Controller
 {
@@ -15,7 +15,7 @@ class ThreadController extends Controller
 
     public function mythread() {       //スレッド一部表示のための部分取得
         $threads = Thread::where([
-            ['userid', '=', session('userid')]])
+            ['userid', '=', Auth::id()]])
             ->paginate(10);
         return view('mypage', ['threads' => $threads]);
     }
@@ -23,14 +23,14 @@ class ThreadController extends Controller
 
     public function tweets(Request $request){ //スレッド投稿した時のDB登録
 
-        $validator = Validator::make($request->all(),[
+        $validated = $request->validate([
             'bordname' => 'required|max:30',
             'gender' => 'required',
             'address' => 'required',
             'oneword' => 'required|max:100'
         ]);
 
-        if ($validator->fails()) {
+        if (!$validated) {
             return redirect('home');
         }
 
@@ -39,7 +39,7 @@ class ThreadController extends Controller
         $tweet->gender = $request->input('gender');
         $tweet->address = $request->input('address');
         $tweet->oneword = $request->input('oneword');
-        $tweet->userid = $request->input('userid');
+        $tweet->userid = Auth::id();
         $tweet->save();
 
         return redirect('home');
@@ -53,22 +53,24 @@ class ThreadController extends Controller
 
     public function editcomp(Request $request){  //編集
         
-        $validator = Validator::make($request->all(),[
+        $validated = $request->validate([
             'bordname' => 'required|max:30',
             'gender' => 'required',
             'address' => 'required',
             'oneword' => 'required|max:100'
         ]);
 
-        if ($validator->fails()) {
+        if (!$validated) {
             return redirect('edit');
         }
 
-        Thread::where(['id', '=', $request['id']])
-            ->update(['bordname' => $request['bordname'],
+        Thread::where('id', '=', $request['id'])
+            ->update([
+                    'bordname' => $request['bordname'],
                     'gender' => $request['gender'],
                     'address' => $request['address'],
-                    'oneword' => $request['oneword']]);
+                    'oneword' => $request['oneword']
+                    ]);
 
         return redirect('mypage');
     }

@@ -64,7 +64,7 @@ class ThreadController extends Controller
             return redirect('edit');
         }
 
-        Thread::where([['id', '=', $request['id']]])
+        Thread::where(['id', '=', $request['id']])
             ->update(['bordname' => $request['bordname'],
                     'gender' => $request['gender'],
                     'address' => $request['address'],

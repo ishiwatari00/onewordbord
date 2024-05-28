@@ -8,21 +8,21 @@
         }
     </style>
     <head>
-        @if(session('userid') == null)
-        <a href = "{{ url('/login') }}" >login</a>
-        <a href = "{{ url('/register') }}" >register</a>
-        @else
+        @if(Auth::check())
         <a href = "{{ url('/home') }}" >Home</a>
         <a href = "{{ url('/mypage') }}" >mypage</a>
         <a href = "{{ url('/logout') }}" >logout</a>
-        {{ session('username') }}でログイン中
+        {{ Auth::id() }}でログイン中
+        @else
+        <a href = "{{ url('/login') }}" >login</a>
+        <a href = "{{ url('/register') }}" >register</a>
         @endif
         <meta charset="UTF-8">
     </head>
     <body class = "background">
         <header>
+        @if(Auth::check())
             <h1>掲示板</h1>
-            @if(session('userid') != null)
                 <table>
                 <form method = "post" action = "tweet">
                 @csrf

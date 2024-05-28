@@ -6,14 +6,17 @@
     </style>
     <head>
         <a href = "{{ url('/home') }}" >Home</a>
+        @if(Auth::check())
         <a href = "{{ url('/mypage') }}" >mypage</a>
+        {{ Auth::id() }}でログイン中
+        @endif
         <meta charset="UTF-8">
     </head>
     <body class = "background">
+        @if(Auth::check())
         <header>
             <h1>編集</h1>
         </header>
-        @if(session('userid') != null)
         <table>
                 <form method = "post" action = "editcomp">
                 @csrf

@@ -9,7 +9,7 @@
     </style>
     <head>
         <a href = "{{ url('/home') }}" >Home</a>
-        {{ Auth::id() }}でログイン中
+        {{ Auth::user()->username; }}でログイン中
         <meta charset="UTF-8">
     </head>
     <body class = "background">

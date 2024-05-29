@@ -14,12 +14,21 @@
         <header>
             <h1>編集</h1>
         </header>
-        <table>
-                <form method = "post">
+        <div>  
+             @if ($errors->any())  
+            <ul>  
+                @foreach ($errors->all() as $error)  
+                    <li>{{ $error }}</li>  
+                @endforeach  
+            </ul>  
+            @endif  
+        </div>
+        <table style="margin-bottom:30px">
+            <form method = "post">
                 @csrf
                 <tr>
                     <td>名前 :</td>
-                    <td><input type = "text" name = "bordname"></input></td>
+                    <td><input type = "text" name = "bordname" value  = "以下、名無しに代わりましてVIPがお送りします。" size = "48px"></input></td>
                 </tr>
 
                 <tr>
@@ -34,6 +43,7 @@
                     <td>住所 :</td>
                     <td>
                         <select name = "address">
+                        <option value ="">-- 選択 --</option>
                         <option value ="東日本">東日本</option>
                         <option value ="西日本">西日本</option>
                         <option value ="その他">その他</option>
@@ -44,17 +54,18 @@
                 <tr>
                     <td>一言 :</td>
                     <td>
-                        <textarea name = "oneword" rows="5" cols="40"></textarea>
+                        <textarea name = "oneword" rows="5" cols="50"></textarea>
                     </td>
                 </tr>
-                    
                 <tr>
+                    <td></td>
                     <td>
-                        <input type = "submit" value = "戻る" formaction = "edit"></input>
+                        <button type="button" onclick= "location.href='{{ url('/mypage') }}'">戻る</button>
                         <input type = "submit" value = "編集" formaction = "editcomp"></input>
                     </td>
                 </tr>
                 <input type = "hidden" name = "id" value = "{{ session('id') }}"></input>
             </form>
+        </table>
     </body>
 </html>

@@ -16,16 +16,16 @@
     </head>
     <body class = "background">
         <header>
-        <div>  
-        @if ($errors->any())  
+            <h1>掲示板</h1>
+            <div>  
+             @if ($errors->any())  
             <ul>  
                 @foreach ($errors->all() as $error)  
                     <li>{{ $error }}</li>  
                 @endforeach  
             </ul>  
-        @endif  
-        </div>
-            <h1>掲示板</h1>
+            @endif  
+            </div>
                 <table style="margin-bottom:30px">
                 <form method = "post" action = "tweet">
                 @csrf
@@ -46,6 +46,7 @@
                     <td>住所 :</td>
                     <td>
                         <select name = "address">
+                        <option value ="">-- 選択 --</option>
                         <option value ="東日本">東日本</option>
                         <option value ="西日本">西日本</option>
                         <option value ="その他">その他</option>

@@ -25,7 +25,7 @@ class ThreadController extends Controller
 
         $validated = $request->validate([
             'bordname' => 'required|max:30',
-            'gender' => 'required',
+            'gender' => 'required|size:1',
             'address' => 'required',
             'oneword' => 'required|max:100'
         ]);
@@ -52,7 +52,7 @@ class ThreadController extends Controller
         
         $validated = $request->validate([
             'bordname' => 'required|max:30',
-            'gender' => 'required',
+            'gender' => 'required|size:1',
             'address' => 'required',
             'oneword' => 'required|max:100'
         ]);

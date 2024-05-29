@@ -12,6 +12,15 @@
         <header>
             <h1>ログイン情報</h1>
         </header>
+        <div>  
+             @if ($errors->any())  
+            <ul>  
+                @foreach ($errors->all() as $error)  
+                    <li>{{ $error }}</li>  
+                @endforeach  
+            </ul>  
+            @endif  
+        </div>
         @if (session('message'))
         <div class="alert alert-success text-center">
         {{ session('message') }}

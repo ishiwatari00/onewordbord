@@ -27,7 +27,12 @@ class UserdataController extends Controller
         ]);
 
         Auth::login($userdata);
-        return redirect('home');
+
+        if(Auth::check()){
+            return redirect('home');
+        }else{
+            return redirect('login')->with('message', 'ログイン出来ませんでした');
+        }
     }
 
     public function logout(){  //ログアウト（セッション削除

@@ -12,6 +12,11 @@
         <header>
             <h1>ログイン情報</h1>
         </header>
+        @if (session('message'))
+        <div>
+        {{ session('message') }}
+        </div>
+        @endif
         <div>  
              @if ($errors->any())  
             <ul>  
@@ -22,7 +27,7 @@
             @endif  
         </div>
         @if (session('message'))
-        <div class="alert alert-success text-center">
+        <div>
         {{ session('message') }}
         </div>
         @endif

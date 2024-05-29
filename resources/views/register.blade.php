@@ -12,6 +12,11 @@
         <header>
             <h1>アカウント登録</h1>
         </header>
+        @if (session('message'))
+        <div>
+        {{ session('message') }}
+        </div>
+        @endif
         <div>  
         @if ($errors->any())  
             <ul>  

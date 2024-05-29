@@ -24,11 +24,7 @@ class LoginController extends Controller
         $logindata = $request->only('username', 'password');
 
         if(Auth::attempt($logindata)){
-            if(Auth::check()){
-                return redirect('home');
-            }else{
-                return redirect('login')->with('message', 'ログイン出来ませんでした');
-            }
+            return redirect('home');
         }else{
             return redirect('login')->with('message', 'ログイン出来ませんでした');
         }

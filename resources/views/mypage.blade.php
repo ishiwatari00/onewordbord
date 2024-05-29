@@ -16,6 +16,11 @@
     <body class = "background">
         <header>
             <h1>自分の投稿</h1>
+            @if (session('message'))
+            <div>
+            {{ session('message') }}
+            </div>
+            @endif
                 <table>
                     @foreach($threads as $thread)
                     <form method = "get">

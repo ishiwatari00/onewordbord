@@ -37,9 +37,12 @@ class ThreadController extends Controller
         $tweet->address = $request->input('address');
         $tweet->oneword = $request->input('oneword');
         $tweet->userid = Auth::id();
-        $tweet->save();
 
-        return redirect('home');
+        if( $tweet->save()){
+            return redirect('home');
+        }else{
+            return redirect('reister')->with('message', '投稿出来ませんでした');
+             }
         }
 
     public function edit(Request $request){  //セッションにＩＤ入れる
@@ -61,21 +64,27 @@ class ThreadController extends Controller
             return redirect('edit');
         }
 
-        Thread::where('id', '=', $request['id'])
+        if( Thread::where('id', '=', $request['id'])
             ->update([
-                    'bordname' => $request['bordname'],
-                    'gender' => $request['gender'],
-                    'address' => $request['address'],
-                    'oneword' => $request['oneword']
-                    ]);
+                'bordname' => $request['bordname'],
+                'gender' => $request['gender'],
+                'address' => $request['address'],
+                'oneword' => $request['oneword']
+                ])){
+            return redirect('mypage');
+        }else{
+            return redirect('mypage')->with('message', '編集出来ませんでした');
+             }
 
-        return redirect('mypage');
     }
 
     public function delete(Request $request){ //削除
-        $id = $request->input('id');  
-        Thread::destroy($id);
-        return redirect('mypage');
+        $id = $request->input('id');
+        if(Thread::destroy($id)){
+            return redirect('mypage');
+        }else{
+            return redirect('mypage')->with('message', '削除出来ませんでした');
+             }
     }
 
     public function deletecheck(Request $request){ //削除チェック

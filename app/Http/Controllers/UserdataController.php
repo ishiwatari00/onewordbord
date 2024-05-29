@@ -21,24 +21,31 @@ class UserdataController extends Controller
             return redirect('register');
         }
 
-        $userdata = Userdata::query()->create([
+        if($userdata = Userdata::query()->create([
             'username'=>$request['username'],
             'password'=>Hash::make($request['password']),
-        ]);
+        ])){
+            Auth::login($userdata);
 
-        Auth::login($userdata);
+            if(Auth::check()){
+                return redirect('home');
+            }else{
+                return redirect('login')->with('message', 'ログイン出来ませんでした');
+            }
 
-        if(Auth::check()){
-            return redirect('home');
         }else{
-            return redirect('login')->with('message', 'ログイン出来ませんでした');
+            return redirect('reister')->with('message', '登録出来ませんでした');
         }
     }
 
     public function logout(){  //ログアウト（セッション削除
         session()->flush();
-        Auth::logout();
-        return redirect('home');
+
+        if (Auth::logout()) {
+            return redirect('login');
+        }else{
+            return redirect('home')->with('message', 'ログアウト出来ませんでした');
+        }
     }
 
 }

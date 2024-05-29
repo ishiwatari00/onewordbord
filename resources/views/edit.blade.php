@@ -14,6 +14,11 @@
         <header>
             <h1>編集</h1>
         </header>
+        @if (session('message'))
+        <div>
+        {{ session('message') }}
+        </div>
+        @endif
         <div>  
              @if ($errors->any())  
             <ul>  

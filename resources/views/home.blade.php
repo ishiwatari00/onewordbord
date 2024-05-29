@@ -17,6 +17,11 @@
     <body class = "background">
         <header>
             <h1>掲示板</h1>
+            @if (session('message'))
+            <div>
+            {{ session('message') }}
+            </div>
+            @endif
             <div>  
              @if ($errors->any())  
             <ul>  

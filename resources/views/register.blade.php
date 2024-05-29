@@ -5,13 +5,22 @@
         }
     </style>
     <head>
-        <a href = "{{ url('/home') }}" >Home</a>
+        <a href = "{{ url('/login') }}" >login</a>
         <meta charset="UTF-8">
     </head>
     <body class = "background">
         <header>
             <h1>アカウント登録</h1>
         </header>
+        <div>  
+        @if ($errors->any())  
+            <ul>  
+                @foreach ($errors->all() as $error)  
+                    <li>{{ $error }}</li>  
+                @endforeach  
+            </ul>  
+        @endif  
+        </div>
             <form method = "post"  action = "insert">
                 @csrf
                 <table>

@@ -12,6 +12,12 @@
         <header>
             <h1>ログイン情報</h1>
         </header>
+        @if (session('message'))
+        <div class="alert alert-success text-center">
+        {{ session('message') }}
+        </div>
+        @endif
+        <br>
             <form method = "post" action = "loginkeep">
             @csrf
                 <table>

@@ -19,18 +19,20 @@
                     @foreach($threads as $thread)
                     <form method = "get">
                     @csrf
-                    <p>
+                    <dt>
                         {{ $thread->id }}&emsp;
                         名前 : <span class = "span">{{ $thread->bordname }}</span>&emsp;
                         {{ $thread->gender }}&emsp;
-                        {{ $thread->address }}
+                        {{ $thread->address }}&emsp;
+                        {{ $thread->created_at }}
                         <input type = "submit" value = "編集" formaction = "/edit"></input>
                         <input type = "submit" value = "削除" formaction = "/deletecheck"></input>
                         <input type = "hidden" value = "{{ $thread->id }}" name = "id"></input>
-                    </p>
-                    <p>
+                    </dt>
+                    <dd>
                         {{ $thread->oneword }}
-                    </p>
+                    </dd>
+                    <br>
                     </form>
                     @endforeach
                 </table>

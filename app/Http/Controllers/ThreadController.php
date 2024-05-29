@@ -29,10 +29,7 @@ class ThreadController extends Controller
             'address' => 'required',
             'oneword' => 'required|max:100'
         ]);
-
-        if (!$validated) {
-            return redirect('home');
-        }
+        
 
         $tweet = new Thread();
         $tweet->bordname = $request->input('bordname');

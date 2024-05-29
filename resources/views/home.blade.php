@@ -8,8 +8,6 @@
         }
     </style>
     <head>
-        <a href = "{{ url('/login') }}" >login</a>  <!-- 後で消す  -->
-        <a href = "{{ url('/register') }}" >register</a> <!-- 後で消す  -->
         <a href = "{{ url('/home') }}" >Home</a>
         <a href = "{{ url('/mypage') }}" >mypage</a>
         <a href = "{{ url('/logout') }}" >logout</a>
@@ -18,17 +16,26 @@
     </head>
     <body class = "background">
         <header>
+        <div>  
+        @if ($errors->any())  
+            <ul>  
+                @foreach ($errors->all() as $error)  
+                    <li>{{ $error }}</li>  
+                @endforeach  
+            </ul>  
+        @endif  
+        </div>
             <h1>掲示板</h1>
-                <table>
+                <table style="margin-bottom:30px">
                 <form method = "post" action = "tweet">
                 @csrf
                 <tr>
-                    <td>name :</td>
+                    <td>名前 :</td>
                     <td><input type = "text" name = "bordname" value  = "以下、名無しに代わりましてVIPがお送りします。" size = "48px"></input></td>
                 </tr>
 
                 <tr>
-                    <td>gender :</td>
+                    <td>性別 :</td>
                     <td>
                         <input type = "radio" name = "gender" value = "♂">♂</input>
                         <input type = "radio" name = "gender" value = "♀">♀</input>
@@ -36,7 +43,7 @@
                 </tr>
 
                 <tr>
-                    <td>address :</td>
+                    <td>住所 :</td>
                     <td>
                         <select name = "address">
                         <option value ="東日本">東日本</option>
@@ -47,31 +54,33 @@
                 </tr>
 
                 <tr>
-                    <td>oneword :</td>
+                    <td>一言 :</td>
                     <td>
                         <textarea name = "oneword" rows="5" cols="50"></textarea>
                     </td>
                 </tr>
                     
                 <tr>
+                    <td></td>
                     <td>
-                        <input type = "submit"></input>
+                        <input type = "submit" value = "書き込む"></input>
                     </td>
                 </tr>
                 </form>
                 </table>
 
                 @foreach($threads as $thread)
-                    <p>
+                    <dt>
                         {{ $thread->id }}&emsp;
                         名前 : <span class = "span">{{ $thread->bordname }}</span>&emsp;
                         {{ $thread->gender }}&emsp;
                         {{ $thread->address }}&emsp;
                         {{ $thread->created_at }}
-                    </p>
-                    <p>
+                    </dt>
+                    <dd>
                         {{ $thread->oneword }}
-                    </p>
+                    </dd>
+                    <br>
                 @endforeach
                 {{ $threads->links('vendor.pagination.default') }}
             

@@ -18,12 +18,12 @@
                 <form method = "post">
                 @csrf
                 <tr>
-                    <td>name :</td>
+                    <td>名前 :</td>
                     <td><input type = "text" name = "bordname"></input></td>
                 </tr>
 
                 <tr>
-                    <td>gender :</td>
+                    <td>性別 :</td>
                     <td>
                         <input type = "radio" name = "gender" value = "♂">♂</input>
                         <input type = "radio" name = "gender" value = "♀">♀</input>
@@ -31,7 +31,7 @@
                 </tr>
 
                 <tr>
-                    <td>address :</td>
+                    <td>住所 :</td>
                     <td>
                         <select name = "address">
                         <option value ="東日本">東日本</option>
@@ -42,7 +42,7 @@
                 </tr>
 
                 <tr>
-                    <td>oneword :</td>
+                    <td>一言 :</td>
                     <td>
                         <textarea name = "oneword" rows="5" cols="40"></textarea>
                     </td>

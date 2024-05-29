@@ -69,7 +69,7 @@
                         <input type = "submit" value = "編集" formaction = "editcomp"></input>
                     </td>
                 </tr>
-                <input type = "hidden" name = "id" value = "{{ session('id') }}"></input>
+                <input type = "hidden" name = "id" value = "{{ $id }}"></input>
             </form>
         </table>
     </body>

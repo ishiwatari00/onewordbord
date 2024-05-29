@@ -42,20 +42,19 @@
                 <tr>
                     <td>性別 :</td>
                     <td>
-                        <input type = "radio" name = "gender" value = "♂">♂</input>
-                        <input type = "radio" name = "gender" value = "♀">♀</input>
+                        <input type = "radio" name = "gender" value = "1">♂</input>
+                        <input type = "radio" name = "gender" value = "2">♀</input>
                     </td>
                 </tr>
 
                 <tr>
                     <td>住所 :</td>
                     <td>
-                        <select name = "address">
-                        <option value ="">-- 選択 --</option>
-                        <option value ="東日本">東日本</option>
-                        <option value ="西日本">西日本</option>
-                        <option value ="その他">その他</option>
-                        </select>
+                    <select name = "address">
+                    @foreach(config('allpref') as $pref_id => $pref)
+                    <option value = "{{ $pref_id }}">{{ $pref }}</option>
+                    @endforeach
+                    </select>
                     </td>
                 </tr>
 
@@ -79,7 +78,11 @@
                     <dt>
                         {{ $thread->id }}&emsp;
                         名前 : <span class = "span">{{ $thread->bordname }}</span>&emsp;
-                        {{ $thread->gender }}&emsp;
+                        @if($thread->gender == "1")
+                        男
+                        @elseif($thread->gender == "2")
+                        女
+                        @endif&emsp;
                         {{ $thread->address }}&emsp;
                         {{ $thread->created_at }}
                     </dt>

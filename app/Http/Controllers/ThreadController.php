@@ -23,11 +23,11 @@ class ThreadController extends Controller
 
     public function tweets(Request $request){ //スレッド投稿した時のDB登録
 
-        $validated = $request->validate([
-            'bordname' => 'required|max:30',
-            'gender' => 'required|size:1',
-            'address' => 'required',
-            'oneword' => 'required|max:100'
+        $request->validate([
+            'bordname' => 'required|max:30|String',
+            'gender' => 'required|integer',
+            'address' => 'required|integer',
+            'oneword' => 'required|max:100|String'
         ]);
         
 
@@ -41,36 +41,38 @@ class ThreadController extends Controller
         if( $tweet->save()){
             return redirect('home');
         }else{
-            return redirect('reister')->with('message', '投稿出来ませんでした');
+            return redirect('home')->with('message', '投稿出来ませんでした');
              }
         }
 
-    public function edit(Request $request){  //セッションにＩＤ入れる
-        $id = $request->input('id');
-        $request->session()->put(['id'=>$id]);  
-        return view('edit');
+    public function edit(Request $request){  //編集画面にIDを送る
+
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+        
+        return view('edit',['id' => $request->input('id')]);
     }
 
     public function editcomp(Request $request){  //編集
         
-        $validated = $request->validate([
-            'bordname' => 'required|max:30',
-            'gender' => 'required|size:1',
-            'address' => 'required',
-            'oneword' => 'required|max:100'
+        $request->validate([
+            'id' => 'required|integer',
+            'bordname' => 'required|max:30|String',
+            'gender' => 'required|integer',
+            'address' => 'required|integer',
+            'oneword' => 'required|max:100|String'
         ]);
 
-        if (!$validated) {
-            return redirect('edit');
-        }
 
-        if( Thread::where('id', '=', $request['id'])
-            ->update([
-                'bordname' => $request['bordname'],
-                'gender' => $request['gender'],
-                'address' => $request['address'],
-                'oneword' => $request['oneword']
-                ])){
+
+        if(Thread::where('id', '=', $request['id'])
+        ->update([
+            'bordname' => $request['bordname'],
+            'gender' => $request['gender'],
+            'address' => $request['address'],
+            'oneword' => $request['oneword']
+            ])){
             return redirect('mypage');
         }else{
             return redirect('mypage')->with('message', '編集出来ませんでした');
@@ -79,15 +81,22 @@ class ThreadController extends Controller
     }
 
     public function delete(Request $request){ //削除
+
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+
         $id = $request->input('id');
-        if(Thread::destroy($id)){
-            return redirect('mypage');
-        }else{
-            return redirect('mypage')->with('message', '削除出来ませんでした');
-             }
+        Thread::destroy($id);
+        return redirect('mypage');
     }
 
     public function deletecheck(Request $request){ //削除チェック
+
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+
         $id = $request->input('id');  
         $threads = Thread::where([['id', '=', $request['id']]])->get();;
         return view('deletecheck', ['threads' => $threads]);

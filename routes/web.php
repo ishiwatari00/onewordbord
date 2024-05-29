@@ -12,7 +12,7 @@ Route::get('/edit', 'App\Http\Controllers\ThreadController@edit')->middleware('a
 
 Route::post('/editcomp', 'App\Http\Controllers\ThreadController@editcomp')->middleware('auth'); //編集
 
-Route::get('/delete', 'App\Http\Controllers\ThreadController@delete')->middleware('auth'); //削除
+Route::post('/delete', 'App\Http\Controllers\ThreadController@delete')->middleware('auth'); //削除
 
 Route::get('/deletecheck', 'App\Http\Controllers\ThreadController@deletecheck')->middleware('auth'); //削除ダイアログ
 

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('userdatas', function (Blueprint $table) {
             $table->id();
             $table->String('username');
-            $table->String('pass');
+            $table->String('password');
             $table->timestamps();
         });
     }

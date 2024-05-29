@@ -15,27 +15,32 @@
     <body class = "background">
         <header>
             <h1>削除してよろしいですか？</h1>
-                <table>
                     @foreach($threads as $thread)
-                    <form method = "get">
+                    <form method = "post" action = "delete">
                     @csrf
-                    <p>
                         {{ $thread->id }}&emsp;
                         名前 : <span class = "span">{{ $thread->bordname }}</span>&emsp;
-                        {{ $thread->gender }}&emsp;
-                        {{ $thread->address }}
-                    </p>
-                    <p>
-                        {{ $thread->oneword }}
-                    </p>
-                    <tr>
-                    <td><input type = "submit" value = "戻る" formaction = "/mypage"></input></td>
-                    <td><input type = "submit" value = "削除" formaction = "/delete"></input></td>
-                    <td><input type = "hidden" name = "id" value = "{{ $thread->id }}"></input><td>
-                    </tr>
+                        
+                        @if($thread->gender == "1")
+                        男
+                        @elseif($thread->gender == "2")
+                        女
+                        @endif&emsp;
+
+                        {{ $thread->address }}&emsp;
+                        @foreach(config('allpref') as $pref_id => $pref)
+                        @if($thread->address == "$pref_id")
+                        {{$pref}}
+                        @endif
+                        @endforeach&emsp;
+                        {{ $thread->created_at }}
+
+                        <dd>{{ $thread->oneword }}</dd>
+                        <input type = "hidden" name = "id" value = "{{ $thread->id }}"></input>
+                        <input type = "submit" value = "削除"></input>
                     </form>
+                    <button type = "button" onclick = "location.href='{{ url('/mypage') }}'">戻る</button>
                     @endforeach
-                </table>
         </header>
     </body>
 </html>

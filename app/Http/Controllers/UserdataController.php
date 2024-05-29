@@ -12,14 +12,11 @@ class UserdataController extends Controller
 {
     public function register(Request $request){   //アカウント登録 idとpw渡し
 
-        $validated = $request->validate([
+        $request->validate([
             'username' => 'required|unique:userdatas|max:30',
             'password' => 'required|min:4|max:30'
         ]);
 
-        if (!$validated) {
-            return redirect('register');
-        }
 
         if($userdata = Userdata::query()->create([
             'username'=>$request['username'],

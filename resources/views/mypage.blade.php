@@ -28,8 +28,20 @@
                     <dt>
                         {{ $thread->id }}&emsp;
                         名前 : <span class = "span">{{ $thread->bordname }}</span>&emsp;
-                        {{ $thread->gender }}&emsp;
+                        
+                        @if($thread->gender == "1")
+                        男
+                        @elseif($thread->gender == "2")
+                        女
+                        @endif&emsp;
+
                         {{ $thread->address }}&emsp;
+                        @foreach(config('allpref') as $pref_id => $pref)
+                        @if($thread->address == "$pref_id")
+                        {{$pref}}
+                        @endif
+                        @endforeach&emsp;
+
                         {{ $thread->created_at }}
                         <input type = "submit" value = "編集" formaction = "/edit"></input>
                         <input type = "submit" value = "削除" formaction = "/deletecheck"></input>

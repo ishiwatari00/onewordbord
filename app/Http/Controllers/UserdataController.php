@@ -13,17 +13,18 @@ class UserdataController extends Controller
     public function register(Request $request){   //アカウント登録 idとpw渡し
 
         $request->validate([
-            'username' => 'required|unique:userdatas|max:30',
-            'password' => 'required|min:4|max:30'
+            'username' => 'required|unique:userdatas|max:30|String',
+            'password' => 'required|min:4|max:30|String'
+        ]);
+
+        $userdata = Userdata::query()->create([
+            'username'=>$request['username'],
+            'password'=>Hash::make($request['password']),
         ]);
 
 
-        if($userdata = Userdata::query()->create([
-            'username'=>$request['username'],
-            'password'=>Hash::make($request['password']),
-        ])){
+        if($userdata != null){
             Auth::login($userdata);
-
             if(Auth::check()){
                 return redirect('home');
             }else{
@@ -36,7 +37,6 @@ class UserdataController extends Controller
     }
 
     public function logout(){  //ログアウト（セッション削除
-        session()->flush();
 
         if (Auth::logout()) {
             return redirect('login');

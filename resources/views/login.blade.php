@@ -26,11 +26,6 @@
             </ul>  
             @endif  
         </div>
-        @if (session('message'))
-        <div>
-        {{ session('message') }}
-        </div>
-        @endif
         <br>
             <form method = "post" action = "loginkeep">
             @csrf

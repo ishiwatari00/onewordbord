@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('threads', function (Blueprint $table) {
             $table->id();
+            $table->String('bordname','30');
+            $table->Int('gender');
+            $table->Int('address');
             $table->String('oneword');
             $table->unsignedBigInteger('userid');
             $table->foreign('userid')->references('id')->on('userdata');

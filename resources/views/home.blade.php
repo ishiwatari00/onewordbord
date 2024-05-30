@@ -15,6 +15,7 @@
         <meta charset="UTF-8">
     </head>
     <body class = "background">
+    
         <header>
             <h1>掲示板</h1>
             @if (session('message'))
@@ -79,11 +80,17 @@
                         {{ $thread->id }}&emsp;
                         名前 : <span class = "span">{{ $thread->bordname }}</span>&emsp;
                         @if($thread->gender == "1")
-                        男
+                        ♂
                         @elseif($thread->gender == "2")
-                        女
+                        ♀
                         @endif&emsp;
-                        {{ $thread->address }}&emsp;
+
+                        @foreach(config('allpref') as $pref_id => $pref)
+                        @if($thread->address == "$pref_id")
+                        {{$pref}}
+                        @endif
+                        @endforeach&emsp;
+                        
                         {{ $thread->created_at }}
                     </dt>
                     <dd>
@@ -94,7 +101,6 @@
                 {{ $threads->links('vendor.pagination.default') }}
             
         </header>
-
-
+           
     </body>
 </html>

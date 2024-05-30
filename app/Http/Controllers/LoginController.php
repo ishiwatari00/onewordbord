@@ -13,8 +13,8 @@ class LoginController extends Controller
     public function loginkeep(Request $request){   //ログイン機能 
 
         $request->validate([
-            'username' => 'required|max:30',
-            'password' => 'required|min:4|max:30'
+            'username' => 'required|max:30|String',
+            'password' => 'required|min:4|max:30|String'
         ]);
  
         $logindata = $request->only('username', 'password');

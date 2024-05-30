@@ -14,17 +14,18 @@
     </head>
     <body class = "background">
         <header>
-            <h1>削除してよろしいですか？</h1>
+            <h1>削除するレコード</h1>
+            <script src="{{ asset('/js/deletealert.js') }}"></script>
                     @foreach($threads as $thread)
-                    <form method = "post" action = "delete">
+                    <form method = "post" id ="deleteform" onsubmit="return alert()">
                     @csrf
                         {{ $thread->id }}&emsp;
                         名前 : <span class = "span">{{ $thread->bordname }}</span>&emsp;
                         
                         @if($thread->gender == "1")
-                        男
+                        ♂
                         @elseif($thread->gender == "2")
-                        女
+                        ♀
                         @endif&emsp;
 
                         {{ $thread->address }}&emsp;
@@ -36,10 +37,10 @@
                         {{ $thread->created_at }}
 
                         <dd>{{ $thread->oneword }}</dd>
-                        <input type = "hidden" name = "id" value = "{{ $thread->id }}"></input>
+                        <input type = "hidden" name = "id"  value = "{{ $thread->id }}"></input>
+                        <button type="button" onclick= "location.href='{{ url('/mypage') }}'">戻る</button>
                         <input type = "submit" value = "削除"></input>
                     </form>
-                    <button type = "button" onclick = "location.href='{{ url('/mypage') }}'">戻る</button>
                     @endforeach
         </header>
     </body>

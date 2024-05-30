@@ -28,8 +28,9 @@
             </ul>  
             @endif  
         </div>
+        <script src="{{ asset('/js/editalert.js') }}"></script>
         <table style="margin-bottom:30px">
-            <form method = "post">
+            <form method = "post"  id ="editform" onsubmit="return alert()">
                 @csrf
                 <tr>
                     <td>名前 :</td>
@@ -39,20 +40,19 @@
                 <tr>
                     <td>性別 :</td>
                     <td>
-                        <input type = "radio" name = "gender" value = "♂">♂</input>
-                        <input type = "radio" name = "gender" value = "♀">♀</input>
+                        <input type = "radio" name = "gender" value = "1">♂</input>
+                        <input type = "radio" name = "gender" value = "2">♀</input>
                     </td>
                 </tr>
 
                 <tr>
                     <td>住所 :</td>
                     <td>
-                        <select name = "address">
-                        <option value ="">-- 選択 --</option>
-                        <option value ="東日本">東日本</option>
-                        <option value ="西日本">西日本</option>
-                        <option value ="その他">その他</option>
-                        </select>
+                    <select name = "address">
+                    @foreach(config('allpref') as $pref_id => $pref)
+                    <option value = "{{ $pref_id }}">{{ $pref }}</option>
+                    @endforeach
+                    </select>
                     </td>
                 </tr>
 
@@ -66,7 +66,7 @@
                     <td></td>
                     <td>
                         <button type="button" onclick= "location.href='{{ url('/mypage') }}'">戻る</button>
-                        <input type = "submit" value = "編集" formaction = "editcomp"></input>
+                        <input type = "submit" value = "編集"></input>
                     </td>
                 </tr>
                 <input type = "hidden" name = "id" value = "{{ $id }}"></input>

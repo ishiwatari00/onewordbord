@@ -7,6 +7,7 @@ use App\Models\Userdata;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Exception;
 
 class UserdataController extends Controller
 {
@@ -17,10 +18,15 @@ class UserdataController extends Controller
             'password' => 'required|min:4|max:30|String'
         ]);
 
+        try{
         $userdata = Userdata::query()->create([
             'username'=>$request['username'],
             'password'=>Hash::make($request['password']),
         ]);
+
+        }catch(Exception $e){
+            abort(404);
+        }
 
 
         if($userdata != null){
@@ -38,10 +44,14 @@ class UserdataController extends Controller
 
     public function logout(){  //ログアウト（セッション削除
 
+        try{
         if (Auth::logout()) {
             return redirect('login');
         }else{
             return redirect('home')->with('message', 'ログアウト出来ませんでした');
+        }
+        }catch(Exception $e){
+            abort(404);
         }
     }
 

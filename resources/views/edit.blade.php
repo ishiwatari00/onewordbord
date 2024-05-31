@@ -30,18 +30,19 @@
         </div>
         <script src="{{ asset('/js/editalert.js') }}"></script>
         <table style="margin-bottom:30px">
+            @foreach($threads as $thread)
             <form method = "post"  id ="editform" onsubmit="return alert()">
                 @csrf
                 <tr>
                     <td>名前 :</td>
-                    <td><input type = "text" name = "bordname" value  = "以下、名無しに代わりましてVIPがお送りします。" size = "48px"></input></td>
+                    <td><input type = "text" name = "bordname" value  = "{{ $thread->bordname }}" size = "48px"></input></td>
                 </tr>
 
                 <tr>
                     <td>性別 :</td>
                     <td>
-                        <input type = "radio" name = "gender" value = "1">♂</input>
-                        <input type = "radio" name = "gender" value = "2">♀</input>
+                        <input type = "radio" name = "gender" value = "1" @if($thread->gender = 1) checked @endif>♂</input>
+                        <input type = "radio" name = "gender" value = "2" @if($thread->gender = 2) checked @endif>♀</input>
                     </td>
                 </tr>
 
@@ -50,7 +51,11 @@
                     <td>
                     <select name = "address">
                     @foreach(config('allpref') as $pref_id => $pref)
+                    @if($pref_id == $thread->address)
+                    <option value = "{{ $pref_id }}" selected>{{ $pref }}</option>
+                    @else
                     <option value = "{{ $pref_id }}">{{ $pref }}</option>
+                    @endif
                     @endforeach
                     </select>
                     </td>
@@ -59,7 +64,7 @@
                 <tr>
                     <td>一言 :</td>
                     <td>
-                        <textarea name = "oneword" rows="5" cols="50"></textarea>
+                        <textarea name = "oneword" rows="5" cols="50">{{ $thread->oneword }}</textarea>
                     </td>
                 </tr>
                 <tr>
@@ -69,8 +74,9 @@
                         <input type = "submit" value = "編集"></input>
                     </td>
                 </tr>
-                <input type = "hidden" name = "id" value = "{{ $id }}"></input>
+                <input type = "hidden" name = "id" value = "{{ $thread->id }}"></input>
             </form>
+            @endforeach
         </table>
     </body>
 </html>

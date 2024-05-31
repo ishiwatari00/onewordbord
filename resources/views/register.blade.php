@@ -34,7 +34,7 @@
                     <td><input type = "text" name = "username"></input></td>
                 </tr>
                 <tr>
-                    <td>pass</td>
+                    <td>password</td>
                     <td><input type = "text" name = "password"></input></td>
                 </tr>
                 </table>

@@ -26,7 +26,6 @@
             </ul>  
             @endif  
         </div>
-        <br>
             <form method = "post" action = "loginkeep">
             @csrf
                 <table>

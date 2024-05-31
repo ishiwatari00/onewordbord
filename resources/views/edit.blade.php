@@ -35,14 +35,14 @@
                 @csrf
                 <tr>
                     <td>名前 :</td>
-                    <td><input type = "text" name = "bordname" value  = "{{ $thread->bordname }}" size = "48px"></input></td>
+                    <td><input type = "text" name = "bordname" value  = "{{ old('bordname',$thread->bordname) }}" size = "48px"></input></td>
                 </tr>
 
                 <tr>
                     <td>性別 :</td>
                     <td>
-                        <input type = "radio" name = "gender" value = "1" @if($thread->gender = 1) checked @endif>♂</input>
-                        <input type = "radio" name = "gender" value = "2" @if($thread->gender = 2) checked @endif>♀</input>
+                        <input type = "radio" name = "gender" value = "1" @if(old('gender',$thread->gender) == 1)checked @endif>♂</input>
+                        <input type = "radio" name = "gender" value = "2" @if(old('gender',$thread->gender) == 2)checked @endif>♀</input>
                     </td>
                 </tr>
 
@@ -51,7 +51,7 @@
                     <td>
                     <select name = "address">
                     @foreach(config('allpref') as $pref_id => $pref)
-                    @if($pref_id == $thread->address)
+                    @if($pref_id == old('address',$thread->address))
                     <option value = "{{ $pref_id }}" selected>{{ $pref }}</option>
                     @else
                     <option value = "{{ $pref_id }}">{{ $pref }}</option>
@@ -64,13 +64,13 @@
                 <tr>
                     <td>一言 :</td>
                     <td>
-                        <textarea name = "oneword" rows="5" cols="50">{{ $thread->oneword }}</textarea>
+                        <textarea name = "oneword" rows="5" cols="50">{{ old('oneword',$thread->oneword) }}</textarea>
                     </td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>
-                        <button type="button" onclick= "location.href='{{ url('/mypage') }}'">戻る</button>
+                        <button type= "button" onclick= "location.href='{{ url('/mypage') }}'">戻る</button>
                         <input type = "submit" value = "編集"></input>
                     </td>
                 </tr>

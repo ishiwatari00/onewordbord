@@ -6,6 +6,8 @@ Route::get('/home', 'App\Http\Controllers\ThreadController@index')->middleware('
 
 Route::get('/mypage', 'App\Http\Controllers\ThreadController@mythread')->middleware('auth'); //一覧一部表示
 
+Route::get('/search', 'App\Http\Controllers\ThreadController@search')->middleware('auth'); //一覧検索表示
+
 Route::post('/tweet', 'App\Http\Controllers\ThreadController@tweets')->middleware('auth'); //投稿
 
 Route::get('/edit', 'App\Http\Controllers\ThreadController@edit')->middleware('auth'); //編集画面行

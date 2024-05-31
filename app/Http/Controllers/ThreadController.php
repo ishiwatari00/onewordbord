@@ -10,16 +10,64 @@ use Exception;
 class ThreadController extends Controller
     {
     public function index() {       //スレッド一覧表示のための全取得
-            $threads = Thread::paginate(10);
+            $threads = Thread::orderBy('id', 'desc')->paginate(10);
             return view('home', ['threads' => $threads]);
         }
 
     public function mythread() {       //スレッド一部表示のための部分取得
             $threads = Thread::where([
                 ['userid', '=', Auth::id()]])
+                ->orderBy('id', 'desc')
                 ->paginate(10);
             return view('mypage', ['threads' => $threads]);
         }
+
+    public function search(Request $request) {       //スレッド検索時の部分取得
+
+        $request->validate([
+            'bordname' => 'max:30',
+            'gender' => 'integer',
+            'address' => 'nullable',
+            'oneword' => 'max:100'
+        ]);
+
+        $request->session()->flash('_old_input',[
+            'bordname' => $request['bordname'],
+            'gender' => $request['gender'],
+            'address' => $request['address'],
+            'oneword' => $request['oneword'],
+        ]);
+
+        try{
+
+            $threadQuery = Thread::query();
+
+            if(!empty($request['bordname'])){
+                $threadQuery->where('bordname', 'LIKE', "%{$request['bordname']}%");
+            }
+
+            if(!empty($request['gender'])){
+                $threadQuery->where('gender', '=', $request['gender']);
+            }
+
+            if(!empty($request['address'])){
+                $threadQuery->where('address', '=', $request['address']);
+            }
+
+            if(!empty($request['oneword'])){
+                $threadQuery->where('oneword', 'LIKE', "%{$request['oneword']}%");
+            }
+
+            $threads = $threadQuery->orderBy('id', 'desc')->paginate(10);
+
+
+            }catch(Exception $e){
+                abort(404);
+            }
+            return view('home', ['threads' => $threads]);
+            
+        }
+
 
 
     public function tweets(Request $request){ //スレッド投稿した時のDB登録

@@ -197,6 +197,7 @@ return [
         'oneword' => '一言',
         'username' => 'ID',
         'password' => 'パスワード',
+        'comment' => 'コメント',
     ],
 
 ];

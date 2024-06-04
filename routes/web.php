@@ -10,24 +10,47 @@ Route::get('/search', 'App\Http\Controllers\ThreadController@search')->middlewar
 
 Route::post('/tweet', 'App\Http\Controllers\ThreadController@tweets')->middleware('auth'); //投稿
 
-Route::get('/edit', 'App\Http\Controllers\ThreadController@edit')->middleware('auth'); //編集画面行
+Route::post('/comment', 'App\Http\Controllers\ThreadController@comment')->middleware('auth'); //コメント投稿
+
+Route::get('/edit', 'App\Http\Controllers\ThreadController@edit')->middleware('auth'); //編集確認
+
+Route::get('/editcmt', 'App\Http\Controllers\ThreadController@editcmt')->middleware('auth'); //編集確認 コメント
 
 Route::post('/editcomp', 'App\Http\Controllers\ThreadController@editcomp')->middleware('auth'); //編集
 
+Route::get('/deletecheck', 'App\Http\Controllers\ThreadController@deletecheck')->middleware('auth'); //削除前確認
+
+Route::get('/deletecmtcheck', 'App\Http\Controllers\ThreadController@deletecmtcheck')->middleware('auth'); //削除前確認　コメント
+
 Route::post('/delete', 'App\Http\Controllers\ThreadController@delete')->middleware('auth'); //削除
 
-Route::get('/deletecheck', 'App\Http\Controllers\ThreadController@deletecheck')->middleware('auth'); //削除ダイアログ
+Route::post('/deletecmt', 'App\Http\Controllers\ThreadController@deletecmt')->middleware('auth'); //削除
 
-Route::get('/login', function () {
+
+//--------↑スレッド関連------------------------------
+//--------↓アカウント関連----------------------------
+
+
+Route::get('/login', function () {  //ログイン画面
     return view('login');
 })->name('login');
 
-Route::get('/register', function () {
+Route::get('/register', function () { //登録画面
     return view('register');
 });
 
+Route::get('/usereditcheck', function () {
+    return view('usereditcheck');
+})->middleware('auth');             //編集画面
+
 Route::post('/insert', 'App\Http\Controllers\UserdataController@register'); //アカウントDB登録
 
-Route::post('/loginkeep', 'App\Http\Controllers\LoginController@loginkeep'); //ログイン
+Route::post('/loginkeep', 'App\Http\Controllers\UserdataController@loginkeep'); //ログイン
 
-Route::get('/logout', 'App\Http\Controllers\UserdataController@logout'); //ログアウツ
+Route::get('/logout', 'App\Http\Controllers\UserdataController@logout'); //ログアウト
+
+Route::post('/useredit', 'App\Http\Controllers\UserdataController@useredit')->middleware('auth'); //編集
+
+Route::get('/leavecheck', 'App\Http\Controllers\UserdataController@leavecheck')->middleware('auth'); //削除確認
+
+Route::post('/leave', 'App\Http\Controllers\UserdataController@leave')->middleware('auth'); //削除

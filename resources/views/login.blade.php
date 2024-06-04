@@ -31,11 +31,11 @@
                 <table>
                 <tr>
                     <td>ID</td>
-                    <td><input type = "text" name = "username"></input></td>
+                    <td><input type = "text" name = "username" size = "25px"></input></td>
                 </tr>
                 <tr>
                     <td>password</td>
-                    <td><input type = "text" name = "password"></input></td>
+                    <td><input type = "text" name = "password" size = "25px"></input></td>
                 </tr>
                 </table>
                 <input type = "submit" value = "ログイン"></input>

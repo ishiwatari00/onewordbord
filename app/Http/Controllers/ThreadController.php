@@ -4,25 +4,38 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Thread;
+use App\Models\Threadcmt;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 
 class ThreadController extends Controller
     {
-    public function index() {       //スレッド一覧表示のための全取得
-            $threads = Thread::orderBy('id', 'desc')->paginate(10);
-            return view('home', ['threads' => $threads]);
-        }
-
-    public function mythread() {       //スレッド一部表示のための部分取得
-            $threads = Thread::where([
-                ['userid', '=', Auth::id()]])
+        
+    public function index() {       //スレッド一覧表示のための全取得、付属しているコメントの取得
+            $threads = Thread::
+                where([ ['bordname', '!=', null]])
                 ->orderBy('id', 'desc')
                 ->paginate(10);
-            return view('mypage', ['threads' => $threads]);
+
+            $threadcmts = Threadcmt::all();
+
+            return view('home', ['threads' => $threads],['threadcmts' => $threadcmts]);
         }
 
-    public function search(Request $request) {       //スレッド検索時の部分取得
+    public function mythread() {       //マイページ表示のためのスレッド部分取得
+            $threads = Thread::
+                where([['userid', '=', Auth::id()]])
+                ->orderBy('id', 'desc')
+                ->paginate(10);
+
+            $threadcmts = Threadcmt::
+            orderBy('id', 'desc')
+            ->paginate(10);;
+
+            return view('mypage', ['threads' => $threads],['threadcmts' => $threadcmts]);
+        }
+
+    public function search(Request $request) {       //スレッド検索
 
         $request->validate([
             'bordname' => 'max:30',
@@ -39,7 +52,7 @@ class ThreadController extends Controller
         ]);
 
         try{
-
+            
             $threadQuery = Thread::query();
 
             if(!empty($request['bordname'])){
@@ -59,12 +72,13 @@ class ThreadController extends Controller
             }
 
             $threads = $threadQuery->orderBy('id', 'desc')->paginate(10);
+            $threadcmts = Threadcmt::all();
 
 
             }catch(Exception $e){
                 abort(404);
             }
-            return view('home', ['threads' => $threads]);
+            return view('home', ['threads' => $threads],['threadcmts' => $threadcmts]);
             
         }
 
@@ -98,6 +112,33 @@ class ThreadController extends Controller
                 return redirect('home')->with('message', '投稿出来ませんでした');
                 }
             }
+
+        public function comment(Request $request){ //コメント投稿した時のDB登録
+
+            $request->validate([
+                'bordname' => 'required|max:30|String',
+                'hostid' => 'required|exists:threads,id|integer',
+                'oneword' => 'required|max:100|String',
+            ]);
+            
+            $tweet = new Threadcmt();
+            $tweet->bordname = $request->input('bordname');
+            $tweet->oneword = $request->input('oneword');
+            $tweet->hostid = $request->input('hostid');
+            $tweet->userid = Auth::id();
+
+            try{
+            $result = $tweet->save();
+            }catch(Exception $e){
+                abort(404);
+            }
+
+            if($result){
+                return redirect('home');
+            }else{
+                return redirect('home')->with('message', '投稿出来ませんでした');
+                }
+            }
             
 
     public function edit(Request $request){  //編集画面にIDを送る
@@ -110,58 +151,56 @@ class ThreadController extends Controller
             return view('edit',['threads' => $threads]);
         }
 
+    public function editcmt(Request $request){  //編集画面にIDを送る コメント
 
-    public function editcomp(Request $request){  //編集
+            $request->validate([
+                'cmtid' => 'required|integer|exists:threadcmts,id',
+            ]);
+
+            $threads = Threadcmt::where([['id', '=', $request['cmtid']]])->get();;
+            return view('edit',['threads' => $threads]);
+        }
+    
+
+
+    public function editcomp(Request $request){  //編集(DBへアップデート)
             
             $request->validate([
                 'id' => 'required|integer|exists:threads,id',
                 'bordname' => 'required|max:30|String',
                 'gender' => 'required|integer',
                 'address' => 'required|integer',
-                'oneword' => 'required|max:100|String'
+                'oneword' => 'required|max:100|String',
+                'userid' => 'required|integer|exists:userdatas,id',
             ]);
 
-           try{
-            $result = Thread::where('id', '=', $request['id'])
-            ->update([
-                'bordname' => $request['bordname'],
-                'gender' => $request['gender'],
-                'address' => $request['address'],
-                'oneword' => $request['oneword']
-            ]);
-            }catch(Exception $e){
-                abort(404);
-            }
+            if($request['userid'] == Auth::id()){
 
-            if($result != 0){
-                return redirect('mypage');
-            }else{
-                return redirect('mypage')->with('message', '編集出来ませんでした');
+                try{
+                $result = Thread::where('id', '=', $request['id'])
+                ->update([
+                    'bordname' => $request['bordname'],
+                    'gender' => $request['gender'],
+                    'address' => $request['address'],
+                    'oneword' => $request['oneword']
+                ]);
+                }catch(Exception $e){
+                    abort(404);
                 }
 
-        }
-
-    public function delete(Request $request){ //削除
-
-            $request->validate([
-                'id' => 'required|integer|exists:threads,id',
-            ]);
+                if($result != 0){
+                    return redirect('mypage');
+                }else{
+                    return redirect('mypage')->with('message', '編集出来ませんでした');
+                    }
             
-            try{
-            $result = Thread::destroy($request['id']);
-
-            }catch(Exception $e){
+            }else{
                 abort(404);
             }
-
-            if($result = 1){ //修正
-            return redirect('mypage');
-            }else{
-                return redirect('mypage')->with('message', '削除出来ませんでした');
-            }
         }
 
-    public function deletecheck(Request $request){ //削除チェック
+        
+    public function deletecheck(Request $request){ //削除データ確認画面
 
             $request->validate([
                 'id' => 'required|integer|exists:threads,id',
@@ -169,6 +208,71 @@ class ThreadController extends Controller
 
             $threads = Thread::where([['id', '=', $request['id']]])->get();;
             return view('deletecheck', ['threads' => $threads]);
-            
         }
+
+    public function deletecmtcheck(Request $request){ //削除データ確認画面 コメント
+
+            $request->validate([
+                'cmtid' => 'required|integer|exists:threadcmts,id',
+            ]);
+
+            $threads = Threadcmt::where([['id', '=', $request['cmtid']]])->get();;
+            return view('deletecheck', ['threads' => $threads]);
+        }
+
+    public function delete(Request $request){ //削除
+
+            $request->validate([
+                'id' => 'required|integer|exists:threads,id',
+                'userid' => 'required|integer|exists:userdatas,id',
+            ]);
+            
+            if($request['userid'] == Auth::id()){
+
+                try{
+                $result = Thread::destroy($request['id']);
+
+                }catch(Exception $e){
+                    abort(404);
+                }
+
+                if($result = 1){
+                return redirect('mypage');
+                }else{
+                    return redirect('mypage')->with('message', '削除出来ませんでした');
+                }
+
+            }else{
+                abort(404);
+            }
+        }
+
+    public function deletecmt(Request $request){ //削除
+
+            $request->validate([
+                'id' => 'required|integer|exists:threadcmts,id',
+                'userid' => 'required|integer|exists:userdatas,id',
+            ]);
+            
+            if($request['userid'] == Auth::id()){
+
+                try{
+                $result = Threadcmt::destroy($request['id']);
+
+                }catch(Exception $e){
+                    abort(404);
+                }
+
+                if($result = 1){
+                return redirect('mypage');
+                }else{
+                    return redirect('mypage')->with('message', '削除出来ませんでした');
+                }
+
+            }else{
+                abort(404);
+            }
+        }
+
+    
 }

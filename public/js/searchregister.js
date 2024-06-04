@@ -10,6 +10,7 @@ function searchonclick(){
     var formObject = document.getElementById('homeform');
     formObject.method = 'get';
     formObject.action = 'search';
+    sessionStorage.searchkey = 'on';
     btnclick();
 }
 
@@ -39,3 +40,14 @@ function searchwindow(){
     tweeton2.style.background = "";
 }
 
+function commentonoff(threadid){
+    var cmtform2 = document.getElementById('cmtform' + threadid);
+    cmtform2.classList.toggle('cmtform');
+}
+
+document.addEventListener("DOMContentLoaded", (event) => {
+    if(sessionStorage.getItem('searchkey')){
+        searchwindow();
+        sessionStorage.clear();
+        };
+  });

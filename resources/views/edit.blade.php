@@ -38,6 +38,7 @@
                     <td><input type = "text" name = "bordname" value  = "{{ old('bordname',$thread->bordname) }}" size = "48px"></input></td>
                 </tr>
 
+                @if($thread->gender && $thread->address )
                 <tr>
                     <td>性別 :</td>
                     <td>
@@ -60,6 +61,7 @@
                     </select>
                     </td>
                 </tr>
+                @endif
 
                 <tr>
                     <td>一言 :</td>
@@ -70,7 +72,6 @@
                 <tr>
                     <td></td>
                     <td>
-                        <button type= "button" onclick= "location.href='{{ url('/mypage') }}'">戻る</button>
                         <input type = "submit" value = "編集"></input>
                     </td>
                 </tr>

@@ -18,6 +18,8 @@ Route::get('/editcmt', 'App\Http\Controllers\ThreadController@editcmt')->middlew
 
 Route::post('/editcomp', 'App\Http\Controllers\ThreadController@editcomp')->middleware('auth'); //編集
 
+Route::post('/editcmtcomp', 'App\Http\Controllers\ThreadController@editcmtcomp')->middleware('auth'); //編集コメント
+
 Route::get('/deletecheck', 'App\Http\Controllers\ThreadController@deletecheck')->middleware('auth'); //削除前確認
 
 Route::get('/deletecmtcheck', 'App\Http\Controllers\ThreadController@deletecmtcheck')->middleware('auth'); //削除前確認　コメント
@@ -43,6 +45,10 @@ Route::get('/usereditcheck', function () {
     return view('usereditcheck');
 })->middleware('auth');             //編集画面
 
+Route::get('/leavecheck', function () {
+    return view('leavecheck');
+})->middleware('auth');            //削除確認
+
 Route::post('/insert', 'App\Http\Controllers\UserdataController@register'); //アカウントDB登録
 
 Route::post('/loginkeep', 'App\Http\Controllers\UserdataController@loginkeep'); //ログイン
@@ -50,7 +56,5 @@ Route::post('/loginkeep', 'App\Http\Controllers\UserdataController@loginkeep'); 
 Route::get('/logout', 'App\Http\Controllers\UserdataController@logout'); //ログアウト
 
 Route::post('/useredit', 'App\Http\Controllers\UserdataController@useredit')->middleware('auth'); //編集
-
-Route::get('/leavecheck', 'App\Http\Controllers\UserdataController@leavecheck')->middleware('auth'); //削除確認
 
 Route::post('/leave', 'App\Http\Controllers\UserdataController@leave')->middleware('auth'); //削除

@@ -160,7 +160,7 @@
                     <!--コメント送信form-->
                     <form method = "post" action = "/comment">
                         @csrf
-                        <div class = "thread">
+                        <div class = "thread2">
                         <dd>
                             <table>
                                 <tr>

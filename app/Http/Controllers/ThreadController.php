@@ -11,7 +11,8 @@ use Exception;
 class ThreadController extends Controller
     {
         
-    public function index() {       //スレッド一覧表示のための全取得、付属しているコメントの取得
+    public function index() {       //
+        
             $threads = Thread::
                 where([ ['bordname', '!=', null]])
                 ->orderBy('id', 'desc')
@@ -23,6 +24,7 @@ class ThreadController extends Controller
         }
 
     public function mythread() {       //マイページ表示のためのスレッド部分取得
+
             $threads = Thread::
                 where([['userid', '=', Auth::id()]])
                 ->orderBy('id', 'desc')
@@ -35,53 +37,53 @@ class ThreadController extends Controller
             return view('mypage', ['threads' => $threads],['threadcmts' => $threadcmts]);
         }
 
+
     public function search(Request $request) {       //スレッド検索
 
-        $request->validate([
-            'bordname' => 'max:30',
-            'gender' => 'integer',
-            'address' => 'nullable',
-            'oneword' => 'max:100'
-        ]);
+            $request->validate([
+                'bordname' => 'max:30',
+                'gender' => 'integer',
+                'address' => 'nullable',
+                'oneword' => 'max:100'
+            ]);
 
-        $request->session()->flash('_old_input',[
-            'bordname' => $request['bordname'],
-            'gender' => $request['gender'],
-            'address' => $request['address'],
-            'oneword' => $request['oneword'],
-        ]);
+            $request->session()->flash('_old_input',[
+                'bordname' => $request['bordname'],
+                'gender' => $request['gender'],
+                'address' => $request['address'],
+                'oneword' => $request['oneword'],
+            ]);
 
-        try{
-            
-            $threadQuery = Thread::query();
+            try{
+                
+                $threadQuery = Thread::query();
 
-            if(!empty($request['bordname'])){
-                $threadQuery->where('bordname', 'LIKE', "%{$request['bordname']}%");
-            }
+                if(!empty($request['bordname'])){
+                    $threadQuery->where('bordname', 'LIKE', "%{$request['bordname']}%");
+                }
 
-            if(!empty($request['gender'])){
-                $threadQuery->where('gender', '=', $request['gender']);
-            }
+                if(!empty($request['gender'])){
+                    $threadQuery->where('gender', '=', $request['gender']);
+                }
 
-            if(!empty($request['address'])){
-                $threadQuery->where('address', '=', $request['address']);
-            }
+                if(!empty($request['address'])){
+                    $threadQuery->where('address', '=', $request['address']);
+                }
 
-            if(!empty($request['oneword'])){
-                $threadQuery->where('oneword', 'LIKE', "%{$request['oneword']}%");
-            }
+                if(!empty($request['oneword'])){
+                    $threadQuery->where('oneword', 'LIKE', "%{$request['oneword']}%");
+                }
 
-            $threads = $threadQuery->orderBy('id', 'desc')->paginate(10);
-            $threadcmts = Threadcmt::all();
+                $threads = $threadQuery->orderBy('id', 'desc')->paginate(10);
+                $threadcmts = Threadcmt::all();
 
 
-            }catch(Exception $e){
-                abort(404);
-            }
-            return view('home', ['threads' => $threads],['threadcmts' => $threadcmts]);
+                }catch(Exception $e){
+                    abort(404);
+                }
+                return view('home', ['threads' => $threads],['threadcmts' => $threadcmts]);
             
         }
-
 
 
     public function tweets(Request $request){ //スレッド投稿した時のDB登録
@@ -113,7 +115,7 @@ class ThreadController extends Controller
                 }
             }
 
-        public function comment(Request $request){ //コメント投稿した時のDB登録
+    public function comment(Request $request){ //コメント投稿した時のDB登録
 
             $request->validate([
                 'bordname' => 'required|max:30|String',
@@ -151,6 +153,7 @@ class ThreadController extends Controller
             return view('edit',['threads' => $threads]);
         }
 
+
     public function editcmt(Request $request){  //編集画面にIDを送る コメント
 
             $request->validate([
@@ -161,7 +164,6 @@ class ThreadController extends Controller
             return view('edit',['threads' => $threads]);
         }
     
-
 
     public function editcomp(Request $request){  //編集(DBへアップデート)
             
@@ -199,6 +201,39 @@ class ThreadController extends Controller
             }
         }
 
+
+    public function editcmtcomp(Request $request){  //編集(DBへアップデート) コメント
+            
+            $request->validate([
+                'id' => 'required|integer|exists:threadcmts,id',
+                'bordname' => 'required|max:30|String',
+                'oneword' => 'required|max:100|String',
+                'userid' => 'required|integer|exists:userdatas,id',
+            ]);
+
+            if($request['userid'] == Auth::id()){
+
+                try{
+                $result = Threadcmt::where('id', '=', $request['id'])
+                ->update([
+                    'bordname' => $request['bordname'],
+                    'oneword' => $request['oneword']
+                ]);
+                }catch(Exception $e){
+                    abort(404);
+                }
+
+                if($result != 0){
+                    return redirect('mypage');
+                }else{
+                    return redirect('mypage')->with('message', '編集出来ませんでした');
+                    }
+            
+            }else{
+                abort(404);
+            }
+        }
+
         
     public function deletecheck(Request $request){ //削除データ確認画面
 
@@ -210,6 +245,7 @@ class ThreadController extends Controller
             return view('deletecheck', ['threads' => $threads]);
         }
 
+
     public function deletecmtcheck(Request $request){ //削除データ確認画面 コメント
 
             $request->validate([
@@ -219,6 +255,7 @@ class ThreadController extends Controller
             $threads = Threadcmt::where([['id', '=', $request['cmtid']]])->get();;
             return view('deletecheck', ['threads' => $threads]);
         }
+
 
     public function delete(Request $request){ //削除
 
@@ -247,6 +284,7 @@ class ThreadController extends Controller
             }
         }
 
+        
     public function deletecmt(Request $request){ //削除
 
             $request->validate([

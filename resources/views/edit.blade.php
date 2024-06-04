@@ -31,7 +31,11 @@
         <script src="{{ asset('/js/editalert.js') }}"></script>
         <table style="margin-bottom:30px">
             @foreach($threads as $thread)
-            <form method = "post"  id ="editform" onsubmit="return alert()">
+            @if($thread->gender && $thread->address )
+                <form method = "post" id ="editform" onsubmit="return alert()">
+            @else
+                <form method = "post" id ="editform" onsubmit="return alertcmt()">
+            @endif
                 @csrf
                 <tr>
                     <td>名前 :</td>
@@ -76,6 +80,7 @@
                     </td>
                 </tr>
                 <input type = "hidden" name = "id" value = "{{ $thread->id }}"></input>
+                <input type = "hidden" name = "userid" value = "{{ $thread->userid }}"></input>
             </form>
             @endforeach
         </table>

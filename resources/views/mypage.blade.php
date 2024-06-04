@@ -6,6 +6,23 @@
         .span {
         color: green;
         }
+        .thread {
+        border: solid 3px #c4c2c2;/*線色*/
+        padding: 0.5em;/*文字周りの余白*/
+        border-radius: 0.4em;/*角丸*/
+        margin-bottom : 5px;
+        padding-top : 15px;
+        padding-bottom : 10px;
+        }
+        .thread2 {
+        border: solid 3px #c4c2c2;/*線色*/
+        padding: 0.5em;/*文字周りの余白*/
+        border-radius: 0.4em;/*角丸*/
+        margin-bottom : 5px;
+        margin-left:50px;
+        padding-top : 15px;
+        padding-bottom : 20px;
+        }
     </style>
     
     <head>
@@ -44,6 +61,7 @@
             <!------------スレッド一覧----------------->
             <div id = "tweetthread">
                     @foreach($threads as $thread)
+                    <div class = "thread">
                     <form method = "get">
                     @csrf
                         <dt>
@@ -67,12 +85,24 @@
                             <input type = "submit" value = "削除" formaction = "/deletecheck"></input>
                             <input type = "hidden" value = "{{ $thread->id }}" name = "id"></input>
                         </dt>
-                    
                         <dd>
                             {{ $thread->oneword }}
                         </dd>
-                        <hr />
                     </form>
+                    </div>
+
+                    @foreach($threadcmts as $threadcmt)
+                            @if($thread->id == $threadcmt->hostid)
+                            <div class = "thread2">
+                            <dd>
+                                名前 : <span class = "span">{{ $threadcmt->bordname }}</span>&emsp;
+                            </dd>
+                            <dd>
+                                {{$threadcmt->oneword}}
+                            </dd>
+                            </div>
+                            @endif                            
+                        @endforeach
                     @endforeach
                 {{ $threads->links('vendor.pagination.default') }}
             </div>
@@ -83,6 +113,7 @@
 
                 @foreach($threadcmts as $threadcmt)
                     @if($threadcmt->userid == Auth::id())
+                    <div class = "thread">
                     <form method = "get">
                     @csrf
                         <dt>
@@ -97,8 +128,8 @@
                         <dd>
                             {{ $threadcmt->oneword }}
                         </dd>
-                        <hr />
                     </form>
+                    </div>
                     @endif                        
                 @endforeach
                 {{ $threadcmts->links('vendor.pagination.default') }}  

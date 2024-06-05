@@ -1,53 +1,49 @@
 
-function tweetonclick(){
-    var formObject = document.getElementById('homeform');
-    formObject.method = 'post';
-    formObject.action = 'tweet';
-    ;btnclick()
-}
+    document.addEventListener("DOMContentLoaded", (event) => {
+        if(sessionStorage.getItem('searchkey')){
+            searchwindow();
+            sessionStorage.clear();
+            };
+    });
 
-function searchonclick(){
-    var formObject = document.getElementById('homeform');
-    formObject.method = 'get';
-    formObject.action = 'search';
-    sessionStorage.searchkey = 'on';
-    btnclick();
-}
+    function formchange(method,action){
+        var formObject = document.getElementById('homeform');
+        formObject.method = method;
+        formObject.action = action;
 
-function btnclick(){
-    return true;
-}
+        if(e.formObject.method == 'get'){
+        sessionStorage.searchkey = 'on';
+        }
+        
+        return true;
+    }
 
-function tweetwindow(){
-    var searchbtn2 = document.getElementById('searchbtn');
-    var tweetbtn2 = document.getElementById('tweetbtn');
-    var searchon2 = document.getElementById('searchon');
-    var tweeton2 = document.getElementById('tweeton');
-    searchbtn2.style.display="none";
-    tweetbtn2.style.display="";
-    searchon2.style.background = "";
-    tweeton2.style.background = "plum";
-}
+    function windowchange(btnname){
+        var searchbtn = document.getElementById('searchbtn');
+        var tweetbtn = document.getElementById('tweetbtn');
+        var searchon = document.getElementById('searchon');
+        var tweeton = document.getElementById('tweeton');
 
-function searchwindow(){
-    var searchbtn2 = document.getElementById('searchbtn');
-    var tweetbtn2 = document.getElementById('tweetbtn');
-    var searchon2 = document.getElementById('searchon');
-    var tweeton2 = document.getElementById('tweeton');
-    searchbtn2.style.display="";
-    tweetbtn2.style.display="none";
-    searchon2.style.background = "plum";
-    tweeton2.style.background = "";
-}
+        searchbtn.removeAttribute('style');
+        tweetbtn.removeAttribute('style');
+        searchon.removeAttribute('style');
+        tweeton.removeAttribute('style');
+        
+        if(btnname == 'tweet'){
+            
+            searchbtn.style.display="none";
+            tweeton.style.background = "plum";
 
-function commentonoff(threadid){
-    var cmtform2 = document.getElementById('cmtform' + threadid);
-    cmtform2.classList.toggle('cmtform');
-}
+        }else if(btnname == 'search'){
 
-document.addEventListener("DOMContentLoaded", (event) => {
-    if(sessionStorage.getItem('searchkey')){
-        searchwindow();
-        sessionStorage.clear();
-        };
-  });
+            tweetbtn.style.display="none";
+            searchon.style.background = "plum";
+        }
+    }
+
+    function commentonoff(threadid){
+        var cmtform = document.getElementById('cmtform' + threadid);
+        cmtform.classList.toggle('cmtform');
+    }
+
+    

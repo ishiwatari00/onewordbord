@@ -252,7 +252,7 @@ class ThreadController extends Controller
                 'cmtid' => 'required|integer|exists:threadcmts,id',
             ]);
 
-            $threads = Threadcmt::where([['id', '=', $request['cmtid']]])->get();;
+            $threads = Threadcmt::where([['id', '=', $request['id']]])->get();;
             return view('deletecheck', ['threads' => $threads]);
         }
 
@@ -285,7 +285,7 @@ class ThreadController extends Controller
         }
 
         
-    public function deletecmt(Request $request){ //削除
+    public function deletecmt(Request $request){ //削除コメント
 
             $request->validate([
                 'id' => 'required|integer|exists:threadcmts,id',

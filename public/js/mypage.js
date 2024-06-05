@@ -1,22 +1,22 @@
+    function windowchange(btnname){
+        var tweetthread = document.getElementById('tweetthread');
+        var commentthread = document.getElementById('commentthread');
+        var tweeton = document.getElementById('tweeton');
+        var commenton = document.getElementById('commenton');
 
-function tweetwindow(){
-    var commentthread2 = document.getElementById('commentthread');
-    var tweetthread2 = document.getElementById('tweetthread');
-    var commenton2 = document.getElementById('commenton');
-    var tweeton2 = document.getElementById('tweeton');
-    commentthread2.style.display="none";
-    tweetthread2.style.display="";
-    commenton2.style.background = "";
-    tweeton2.style.background = "plum";
-}
+        tweetthread.removeAttribute('style');
+        commentthread.removeAttribute('style');
+        tweeton.removeAttribute('style');
+        commenton.removeAttribute('style');
+        
+        if(btnname == 'tweet'){
+            
+            commentthread.style.display="none";
+            tweeton.style.background = "plum";
 
-function commentwindow(){
-    var commentthread2 = document.getElementById('commentthread');
-    var tweetthread2 = document.getElementById('tweetthread');
-    var commenton2 = document.getElementById('commenton');
-    var tweeton2 = document.getElementById('tweeton');
-    commentthread2.style.display="";
-    tweetthread2.style.display="none";
-    commenton2.style.background = "plum";
-    tweeton2.style.background = "";
-}
+        }else if(btnname == 'comment'){
+
+            tweetthread.style.display="none";
+            commenton.style.background = "plum";
+        }
+    }

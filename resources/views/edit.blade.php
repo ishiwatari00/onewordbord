@@ -28,13 +28,13 @@
             </ul>  
             @endif  
         </div>
-        <script src="{{ asset('/js/editalert.js') }}"></script>
+        <script src="{{ asset('/js/alert.js') }}"></script>
         <table style="margin-bottom:30px">
             @foreach($threads as $thread)
             @if($thread->gender && $thread->address )
-                <form method = "post" id ="editform" onsubmit="return alert()">
+                <form method = "post" id ="editform" onsubmit="return alert('editform','editcomp','編集')">
             @else
-                <form method = "post" id ="editform" onsubmit="return alertcmt()">
+                <form method = "post" id ="editform" onsubmit="return alert('editform','editcmtcomp','編集')">
             @endif
                 @csrf
                 <tr>

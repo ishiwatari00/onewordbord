@@ -26,6 +26,7 @@
         padding-top : 15px;
         padding-bottom : 20px;
         }
+
     </style>
     <head>
         <a href = "{{ url('/home') }}" >Home</a>
@@ -57,14 +58,14 @@
 
                 <table style="margin-bottom:30px">
                 
-                <tr>
-                    <td></td>
-                    <td>
-                        <button id = "tweeton" onclick = "tweetwindow()">📝</button>
-                        <button id = "searchon" onclick = "searchwindow()">🔍</button>
-                        <button type= "button" onclick= "location.href='{{ url('/home') }}'">🔄</button>
-                    </td>
-                </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button id = "tweeton" onclick = "windowchange('tweet')">📝</button>
+                            <button id = "searchon" onclick = "windowchange('search')">🔍</button>
+                            <button type= "button" onclick= "location.href='{{ url('/home') }}'">🔄</button>
+                        </td>
+                    </tr>
 
                 <form  id ="homeform" onsubmit="return btnclick()" >
                 @csrf
@@ -100,15 +101,13 @@
                     </td>
                 </tr>
                 
-                <div style = "display:none;">
                 <tr>
                     <td></td>
                     <td>
-                        <input type = "submit" value = "投稿📝" id = "tweetbtn" onclick = 'tweetonclick()' style = "display: none"></input>
-                        <input type = "submit" value = "検索🔍" id = "searchbtn" onclick = 'searchonclick()' style = "display: none"></input>
+                        <input type = "submit" value = "投稿📝" id = "tweetbtn" onclick = 'formchange("post","tweet")' style = "display: none"></input>
+                        <input type = "submit" value = "検索🔍" id = "searchbtn" onclick = 'formchange("get","search")' style = "display: none"></input>
                     </td>
                 </tr>
-                </div>
                 </form>
                 </table>
 

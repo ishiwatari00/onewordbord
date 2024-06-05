@@ -32,9 +32,9 @@
                     @endif  
                 </div>
 
-            <script src="{{ asset('/js/leavealert.js') }}"></script>
+            <script src="{{ asset('/js/alert.js') }}"></script>
                 <table>
-                    <form method = "post" id ="leaveform" onsubmit="return alert()">
+                    <form method = "post" id ="leaveform" onsubmit="return alert('leaveform','leave','退会')">
                     @csrf
                         <tr>
                         <td>ID</td>

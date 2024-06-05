@@ -55,8 +55,8 @@
 
         </header>
 
-            <button id = "tweeton" onclick = "tweetwindow()" style = "background:plum">📝</button>
-            <button id = "commenton" onclick = "commentwindow()">💬</button>
+            <button id = "tweeton" onclick = "windowchange('tweet')" style = "background:plum">📝</button>
+            <button id = "commenton" onclick = "windowchange('comment')">💬</button>
 
             <!------------スレッド一覧----------------->
             <div id = "tweetthread">
@@ -122,7 +122,7 @@
                             {{ $threadcmt->created_at }}
                             <input type = "submit" value = "編集" formaction = "/editcmt"></input>
                             <input type = "submit" value = "削除" formaction = "/deletecmtcheck"></input>
-                            <input type = "hidden" value = "{{ $threadcmt->id }}" name = "cmtid"></input>
+                            <input type = "hidden" value = "{{ $threadcmt->id }}" name = "id"></input>
                         </dt>
                     
                         <dd>

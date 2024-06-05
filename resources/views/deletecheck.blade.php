@@ -16,14 +16,14 @@
     <body class = "background">
         <header>
             <h1>削除するレコード</h1>
-            <script src="{{ asset('/js/deletealert.js') }}"></script>
+            <script src="{{ asset('/js/alert.js') }}"></script>
         </header>
         
                 @foreach($threads as $thread)
                 @if($thread->gender && $thread->address )
-                    <form method = "post" id ="deleteform" onsubmit="return alert()">
+                    <form method = "post" id ="deleteform" onsubmit="return alert('deleteform','delete','削除')">
                 @else
-                    <form method = "post" id ="deleteform" onsubmit="return alertcmt()">
+                    <form method = "post" id ="deleteform" onsubmit="return alert('deleteform','deletecmt','削除')">
                 @endif
                     @csrf
                         {{ $thread->id }}&emsp;

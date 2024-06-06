@@ -26,9 +26,9 @@
     </style>
     
     <head>
-        <a href = "{{ url('/home') }}" >Home</a>
-        <a href = "{{ url('/usereditcheck') }}" >edit</a>
-        <a href = "{{ url('/leavecheck') }}" >Leave</a>
+        <a href = "{{ url('/home') }}" onclick = "sessionclear()">▶Home</a>
+        <a href = "{{ url('/usereditcheck') }}" onclick = "sessionclear()">▶edit</a>
+        <a href = "{{ url('/leavecheck') }}" onclick = "sessionclear()">▶Leave</a>
         {{ Auth::user()->username; }}でログイン中
         <meta charset="UTF-8">
     </head>
@@ -55,12 +55,14 @@
 
         </header>
 
-            <button id = "tweeton" onclick = "windowchange('tweet')" style = "background:plum">📝</button>
-            <button id = "commenton" onclick = "windowchange('comment')">💬</button>
+        <form method = "get" id = "mypageform">
+            <input type = "submit" value = "📝" id = "tweeton" onclick = "windowchange('tweet')" style = "background:plum"></input>
+            <input type = "submit" value = "💬" id = "commenton" onclick = "windowchange('comment')"></input>
+        </form>
 
             <!------------スレッド一覧----------------->
             <div id = "tweetthread">
-                    @foreach($threads as $thread)
+                @foreach($threads as $thread)
                     <div class = "thread">
                     <form method = "get">
                     @csrf
@@ -68,21 +70,23 @@
                             {{ $thread->id }}&emsp;
                             名前 : <span class = "span">{{ $thread->bordname }}</span>&emsp;
                         
-                            @if($thread->gender == "1")
-                            ♂
-                            @elseif($thread->gender == "2")
-                            ♀
-                            @endif&emsp;
+                            @if($thread->gender && $thread->address )
+                                @if($thread->gender == "1")
+                                ♂
+                                @elseif($thread->gender == "2")
+                                ♀
+                                @endif&emsp;
 
-                            @foreach(config('allpref') as $pref_id => $pref)
-                            @if($thread->address == "$pref_id")
-                            {{$pref}}
+                                @foreach(config('allpref') as $pref_id => $pref)
+                                @if($thread->address == "$pref_id")
+                                {{$pref}}
+                                @endif
+                                @endforeach&emsp;
                             @endif
-                            @endforeach&emsp;
 
                             {{ $thread->created_at }}
-                            <input type = "submit" value = "編集" formaction = "/edit"></input>
-                            <input type = "submit" value = "削除" formaction = "/deletecheck"></input>
+                            <input type = "submit" value = "編集" formaction = "/edit" onclick = "sessionclear()"></input>
+                            <input type = "submit" value = "削除" formaction = "/deletecheck" onclick = "sessionclear()"></input>
                             <input type = "hidden" value = "{{ $thread->id }}" name = "id"></input>
                         </dt>
                         <dd>
@@ -90,8 +94,9 @@
                         </dd>
                     </form>
                     </div>
-
-                    @foreach($threadcmts as $threadcmt)
+                    
+                    @if($thread->gender && $thread->address )
+                        @foreach($threadcmts as $threadcmt)
                             @if($thread->id == $threadcmt->hostid)
                             <div class = "thread2">
                             <dd>
@@ -103,38 +108,12 @@
                             </div>
                             @endif                            
                         @endforeach
+                    @endif
+
                     @endforeach
+
                 {{ $threads->links('vendor.pagination.default') }}
             </div>
                 <!------------スレッド一覧----------------->
-
-                <!------------コメント一覧----------------->
-            <div id = "commentthread" style = "display: none">
-
-                @foreach($threadcmts as $threadcmt)
-                    @if($threadcmt->userid == Auth::id())
-                    <div class = "thread">
-                    <form method = "get">
-                    @csrf
-                        <dt>
-                            名前 : <span class = "span">{{ $threadcmt->bordname }}</span>&emsp;                  
-
-                            {{ $threadcmt->created_at }}
-                            <input type = "submit" value = "編集" formaction = "/editcmt"></input>
-                            <input type = "submit" value = "削除" formaction = "/deletecmtcheck"></input>
-                            <input type = "hidden" value = "{{ $threadcmt->id }}" name = "id"></input>
-                        </dt>
-                    
-                        <dd>
-                            {{ $threadcmt->oneword }}
-                        </dd>
-                    </form>
-                    </div>
-                    @endif                        
-                @endforeach
-                {{ $threadcmts->links('vendor.pagination.default') }}  
-            </div>
-
-                <!------------コメント一覧----------------->
     </body>
 </html>

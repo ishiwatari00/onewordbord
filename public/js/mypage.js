@@ -1,22 +1,33 @@
+    
+    document.addEventListener("DOMContentLoaded", (event) => {
+        if(sessionStorage.getItem('cmtkey')){
+            windowchange('comment');
+            };
+    });
+
+
+    
     function windowchange(btnname){
-        var tweetthread = document.getElementById('tweetthread');
-        var commentthread = document.getElementById('commentthread');
         var tweeton = document.getElementById('tweeton');
         var commenton = document.getElementById('commenton');
+        var formObject = document.getElementById('mypageform');
 
-        tweetthread.removeAttribute('style');
-        commentthread.removeAttribute('style');
         tweeton.removeAttribute('style');
         commenton.removeAttribute('style');
         
         if(btnname == 'tweet'){
-            
-            commentthread.style.display="none";
             tweeton.style.background = "plum";
+            formObject.action = 'mypage';
+            sessionStorage.clear();
+
 
         }else if(btnname == 'comment'){
-
-            tweetthread.style.display="none";
             commenton.style.background = "plum";
+            sessionStorage.setItem('cmtkey','cmt');
+            formObject.action = 'mycmt';
         }
+    }
+
+    function sessionclear(){
+        sessionStorage.clear();
     }

@@ -5,8 +5,9 @@
         }
     </style>
     <head>
-        <a href = "{{ url('/home') }}" >Home</a>
-        <a href = "{{ url('/mypage') }}" >mypage</a>
+        <a href = "{{ url('/home') }}" >▶Home</a>
+        <a href = "{{ url('/mypage') }}" >▶mypage</a>
+        <a href = "{{ url('/logout') }}" >▶logout</a>
         {{ Auth::user()->username; }}でログイン中
         <meta charset="UTF-8">
     </head>

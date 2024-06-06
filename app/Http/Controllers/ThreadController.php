@@ -23,7 +23,7 @@ class ThreadController extends Controller
             return view('home', ['threads' => $threads],['threadcmts' => $threadcmts]);
         }
 
-    public function mythread() {       //マイページ表示のためのスレッド部分取得
+    public function mypage() {       //マイページ表示のためのスレッド部分取得
 
             $threads = Thread::
                 where([['userid', '=', Auth::id()]])
@@ -35,6 +35,16 @@ class ThreadController extends Controller
             ->paginate(10);;
 
             return view('mypage', ['threads' => $threads],['threadcmts' => $threadcmts]);
+        }
+
+    public function mycmt() {       //マイページ表示のためのスレッド部分取得
+
+            $threads = Threadcmt::
+                where([['userid', '=', Auth::id()]])
+                ->orderBy('id', 'desc')
+                ->paginate(10);
+
+            return view('mypage', ['threads' => $threads]);
         }
 
 
@@ -157,10 +167,10 @@ class ThreadController extends Controller
     public function editcmt(Request $request){  //編集画面にIDを送る コメント
 
             $request->validate([
-                'cmtid' => 'required|integer|exists:threadcmts,id',
+                'id' => 'required|integer|exists:threadcmts,id',
             ]);
 
-            $threads = Threadcmt::where([['id', '=', $request['cmtid']]])->get();;
+            $threads = Threadcmt::where([['id', '=', $request['id']]])->get();;
             return view('edit',['threads' => $threads]);
         }
     
@@ -249,7 +259,7 @@ class ThreadController extends Controller
     public function deletecmtcheck(Request $request){ //削除データ確認画面 コメント
 
             $request->validate([
-                'cmtid' => 'required|integer|exists:threadcmts,id',
+                'id' => 'required|integer|exists:threadcmts,id',
             ]);
 
             $threads = Threadcmt::where([['id', '=', $request['id']]])->get();;

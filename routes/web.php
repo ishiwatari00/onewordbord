@@ -1,33 +1,27 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ThreadController;
+use App\Http\Controllers\UserdataController;
 
-Route::get('/home', 'App\Http\Controllers\ThreadController@index')->middleware('auth'); //一覧表示
+Route::controller(ThreadController::class)->middleware(['auth'])->group(function(){
 
-Route::get('/mypage', 'App\Http\Controllers\ThreadController@mythread')->middleware('auth'); //一覧一部表示
+    Route::get('/home', 'index');                     //一覧表示
+    Route::get('/mypage', 'mypage');                //マイページ一覧表示
+    Route::get('/mycmt', 'mycmt');                //マイページ一覧表示　コメント
+    Route::get('/search', 'search');                  //一覧検索表示
+    Route::post('/tweet', 'tweets');                  //投稿
+    Route::post('/comment', 'comment');               //コメント投稿
+    Route::get('/edit', 'edit');                      //編集確認
+    Route::get('/editcmt', 'editcmt');                //編集確認 コメント
+    Route::post('/editcomp', 'editcomp');             //編集
+    Route::post('/editcmtcomp', 'editcmtcomp');       //編集コメント
+    Route::get('/deletecheck', 'deletecheck');        //削除前確認
+    Route::get('/deletecmtcheck', 'deletecmtcheck');  //削除前確認　コメント
+    Route::post('/delete', 'delete');                 //削除
+    Route::post('/deletecmt', 'deletecmt');           //削除
 
-Route::get('/search', 'App\Http\Controllers\ThreadController@search')->middleware('auth'); //一覧検索表示
-
-Route::post('/tweet', 'App\Http\Controllers\ThreadController@tweets')->middleware('auth'); //投稿
-
-Route::post('/comment', 'App\Http\Controllers\ThreadController@comment')->middleware('auth'); //コメント投稿
-
-Route::get('/edit', 'App\Http\Controllers\ThreadController@edit')->middleware('auth'); //編集確認
-
-Route::get('/editcmt', 'App\Http\Controllers\ThreadController@editcmt')->middleware('auth'); //編集確認 コメント
-
-Route::post('/editcomp', 'App\Http\Controllers\ThreadController@editcomp')->middleware('auth'); //編集
-
-Route::post('/editcmtcomp', 'App\Http\Controllers\ThreadController@editcmtcomp')->middleware('auth'); //編集コメント
-
-Route::get('/deletecheck', 'App\Http\Controllers\ThreadController@deletecheck')->middleware('auth'); //削除前確認
-
-Route::get('/deletecmtcheck', 'App\Http\Controllers\ThreadController@deletecmtcheck')->middleware('auth'); //削除前確認　コメント
-
-Route::post('/delete', 'App\Http\Controllers\ThreadController@delete')->middleware('auth'); //削除
-
-Route::post('/deletecmt', 'App\Http\Controllers\ThreadController@deletecmt')->middleware('auth'); //削除
-
+});
 
 //--------↑スレッド関連------------------------------
 //--------↓アカウント関連----------------------------
@@ -49,12 +43,13 @@ Route::get('/leavecheck', function () {
     return view('leavecheck');
 })->middleware('auth');            //削除確認
 
-Route::post('/insert', 'App\Http\Controllers\UserdataController@register'); //アカウントDB登録
 
-Route::post('/loginkeep', 'App\Http\Controllers\UserdataController@loginkeep'); //ログイン
+Route::controller(UserdataController::class)->group(function(){
 
-Route::get('/logout', 'App\Http\Controllers\UserdataController@logout'); //ログアウト
+Route::post('/insert', 'register');                         //アカウントDB登録
+Route::post('/loginkeep', 'loginkeep');                     //ログイン
+Route::get('/logout', 'logout');                            //ログアウト
+Route::post('/useredit', 'useredit')->middleware('auth');   //編集
+Route::post('/leave', 'leave')->middleware('auth');         //削除
 
-Route::post('/useredit', 'App\Http\Controllers\UserdataController@useredit')->middleware('auth'); //編集
-
-Route::post('/leave', 'App\Http\Controllers\UserdataController@leave')->middleware('auth'); //削除
+});

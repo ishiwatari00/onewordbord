@@ -1,7 +1,7 @@
 
     document.addEventListener("DOMContentLoaded", (event) => {
         if(sessionStorage.getItem('searchkey')){
-            searchwindow();
+            windowchange('search');
             sessionStorage.clear();
             };
     });
@@ -11,7 +11,7 @@
         formObject.method = method;
         formObject.action = action;
 
-        if(e.formObject.method == 'get'){
+        if(method == 'get'){
         sessionStorage.searchkey = 'on';
         }
         

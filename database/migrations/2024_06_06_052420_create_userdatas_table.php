@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('threads', function (Blueprint $table) {
+        Schema::create('userdatas', function (Blueprint $table) {
             $table->id();
-            $table->String('bordname','30');
-            $table->Integer('gender');
-            $table->Integer('address');
-            $table->String('oneword');
-            $table->unsignedBigInteger('userid');
-            $table->foreign('userid')->references('id')->on('userdata');
+            $table->string('username');
+            $table->string('email');
+            $table->string('password');
+            $table->boolean('verify');
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('threads');
+        Schema::dropIfExists('userdatas');
     }
 };

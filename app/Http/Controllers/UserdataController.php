@@ -4,23 +4,65 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Userdata;
+use App\Models\Tokensave;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Exception;
 
 class UserdataController extends Controller
+  
 {
-    public function register(Request $request){   //アカウント登録+ログイン
+
+    public function emailsend(Request $request){  //Eメールを送信
+
+        $request->validate([
+            'email' => 'required|unique:userdatas,email|email|max:50|String',
+        ]);
+
+        $token = uniqid(Hash::make($request['email']),true);
+        $url = request()->getSchemeAndHttpHost()."/register?token=". $token;
+            //トークン付きのそれっぽいURLは発行できてる
+
+        $timelimit = now()->modify('+30 minutes')->format("Y-m-d H:i:s");
+
+        echo $url;
+        echo $timelimit;
+        
+        $tokensave = Tokensave::query()->create([   //DBの変更が必要
+            'email'=>$request['email'],
+            'token'=>$token,
+            'timelimit'=>$timelimit,
+        ]);
+
+        return view('emailsend');
+        
+        /*　Mail::to($email)
+        ->send();
+        */
+
+    }
+
+    public function register(Request $request){
+        $token = $request['token'];
+        
+        return view('/register');
+    }
+
+
+
+    public function insert(Request $request){   //アカウント登録+ログイン
 
             $request->validate([
-                'username' => 'required|unique:userdatas|max:30|String',
-                'password' => 'required|min:4|max:30|String'
+                'username' => 'required|unique:userdatas,username|max:30|String',
+                'password' => 'required|min:4|max:30|String',
             ]);
 
             try{
             $userdata = Userdata::query()->create([
                 'username'=>$request['username'],
+                'email'=>$request['email'],
+                'verify'=>0,
                 'password'=>Hash::make($request['password']),
             ]);
 

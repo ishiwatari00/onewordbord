@@ -31,8 +31,8 @@ Route::get('/login', function () {  //ログイン画面
     return view('login');
 })->name('login');
 
-Route::get('/register', function () { //登録画面
-    return view('register');
+Route::get('/emailregister', function () {  //メアド登録画面
+    return view('emailregister');
 });
 
 Route::get('/usereditcheck', function () {
@@ -46,7 +46,9 @@ Route::get('/leavecheck', function () {
 
 Route::controller(UserdataController::class)->group(function(){
 
-Route::post('/insert', 'register');                         //アカウントDB登録
+Route::post('/emailsend', 'emailsend');                     //Eメール送信
+Route::get('/register','register');                         //トークン受け取り認証
+Route::post('/insert', 'insert');                         //アカウントDB登録
 Route::post('/loginkeep', 'loginkeep');                     //ログイン
 Route::get('/logout', 'logout');                            //ログアウト
 Route::post('/useredit', 'useredit')->middleware('auth');   //編集

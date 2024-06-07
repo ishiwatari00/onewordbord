@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('userdatas', function (Blueprint $table) {
+        Schema::create('tokensaves', function (Blueprint $table) {
             $table->id();
-            $table->String('username');
-            $table->String('password');
+            $table->string('token');
+            $table->string('email');
+            $table->datetime('timelimit');
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('userdatas');
+        Schema::dropIfExists('tokensaves');
     }
 };

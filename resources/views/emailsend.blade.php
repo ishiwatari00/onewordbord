@@ -10,7 +10,7 @@
     </head>
     <body class = "background">
         <header>
-            <h1>アカウント登録</h1>
+            <h1>メールを送りました</h1>
         </header>
         @if (session('message'))
         <div>
@@ -26,19 +26,7 @@
             </ul>  
         @endif  
         </div>
-            <form method = "post"  action = "insert">
-                @csrf
-                <table>
-                <tr>
-                    <td>ID</td>
-                    <td><input type = "text" name = "username" size = "25px"></input></td>
-                </tr>
-                <tr>
-                    <td>password</td>
-                    <td><input type = "text" name = "password" size = "25px"></input></td>
-                </tr>
-                </table>
-                <input type = "submit" value = "登録"></input>
-            </form>
+            
+            <p>受信したメールから登録を続けてください</p>
     </body>
 </html>

@@ -2,17 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\Thread;
+use App\Models\Threadcmt;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class threadsTableSeeder extends Seeder
+class threadcmtsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Thread::factory(100)->create();
+        Threadcmt::factory(50)->create();
     }
 }

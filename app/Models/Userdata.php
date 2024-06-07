@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Userdata extends Authenticatable
 {
-
-    protected $fillable = ['username','password'];
+    protected $fillable = ['username','email','password','verify'];
     use HasFactory;
 }

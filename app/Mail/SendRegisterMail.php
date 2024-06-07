@@ -16,28 +16,29 @@ class SendRegisterMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($url)
     {
-        //
+        $this->url = $url;
     }
 
     /**
      * Get the message envelope.
      */
-    public function envelope(): Envelope
+    public function envelope(): Envelope   //件名、送信者、返信先
     {
         return new Envelope(
-            subject: 'Send Register Mail',
+            subject: '仮登録完了のお知らせ',
+            from:'from@example.com',
         );
     }
 
     /**
      * Get the message content definition.
      */
-    public function content(): Content
+    public function content(): Content    //本文設定　bladeで作成
     {
         return new Content(
-            view: 'view.name',
+            html: 'emails.emailtemp',
         );
     }
 
@@ -46,7 +47,7 @@ class SendRegisterMail extends Mailable
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments(): array
+    public function attachments(): array        //添付ファイル
     {
         return [];
     }

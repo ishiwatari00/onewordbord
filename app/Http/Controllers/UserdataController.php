@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Userdata;
 use App\Models\Tokensave;
+use App\Mail\SendRegisterMail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Exception;
 
 class UserdataController extends Controller
@@ -22,34 +24,37 @@ class UserdataController extends Controller
 
         $token = uniqid(Hash::make($request['email']),true);
         $url = request()->getSchemeAndHttpHost()."/register?token=". $token;
-            //トークン付きのそれっぽいURLは発行できてる
 
-        $timelimit = now()->modify('+30 minutes')->format("Y-m-d H:i:s");
+        $timelimit = now()->modify('+1minutes')->format("Y-m-d H:i:s");
 
-        echo $url;
-        echo $timelimit;
-        
-        $tokensave = Tokensave::query()->create([   //DBの変更が必要
+        $tokensave = Tokensave::query()->create([
             'email'=>$request['email'],
             'token'=>$token,
             'timelimit'=>$timelimit,
         ]);
 
-        return view('emailsend');
-        
-        /*　Mail::to($email)
-        ->send();
-        */
+        Mail::to($request['email'])
+                ->send(new SendRegisterMail($url));
 
+        return view('emailsend',compact('url'));
+        
     }
 
-    public function register(Request $request){
+    public function register(Request $request){         //トークンの認証
+
+        $data = Tokensave::where([
+            'token' => $request['token']
+        ])->first();
+
         $token = $request['token'];
+
+        if($data == null){
+            return redirect('/emailregister')->with('message', 'トークンが無効です');
+        }else{
+            return view('/register',compact('token'));
+        }
         
-        return view('/register');
     }
-
-
 
     public function insert(Request $request){   //アカウント登録+ログイン
 
@@ -59,12 +64,20 @@ class UserdataController extends Controller
             ]);
 
             try{
-            $userdata = Userdata::query()->create([
-                'username'=>$request['username'],
-                'email'=>$request['email'],
-                'verify'=>0,
-                'password'=>Hash::make($request['password']),
-            ]);
+                $email = tokensave::where([
+                    'token' => $request['token']
+                ])->first();
+
+                $token = tokensave::where([
+                    'token' => $request['token']
+                ])
+                ->delete();
+
+                $userdata = Userdata::query()->create([
+                    'username'=>$request['username'],
+                    'email'=>$email['email'],
+                    'password'=>Hash::make($request['password']),
+                ]);
 
             }catch(Exception $e){
                 abort(404);
@@ -168,7 +181,7 @@ class UserdataController extends Controller
                     }
             
                     if($result = 1){
-                    return redirect('register')->with('message', '退会しました');
+                    return redirect('login')->with('message', '退会しました');
                     }else{
                         return redirect('mypage')->with('message', '退会出来ませんでした');
                     }

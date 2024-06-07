@@ -21,11 +21,12 @@
         @if ($errors->any())  
             <ul>  
                 @foreach ($errors->all() as $error)  
-                    <li>{{ $error }}</li>  
+                    <li>{{ $error }}</li>
+                    @if($error)
+                    @endif  
                 @endforeach  
-            </ul>  
-        @endif  
-        </div>
+            </ul>
+        @else
             <form method = "post"  action = "insert">
                 @csrf
                 <table>
@@ -37,8 +38,11 @@
                     <td>password</td>
                     <td><input type = "text" name = "password" size = "25px"></input></td>
                 </tr>
+                    <input type = "hidden" name = "token" value = {{ $token }}></input>
                 </table>
                 <input type = "submit" value = "登録"></input>
             </form>
+        @endif
+        </div> 
     </body>
 </html>

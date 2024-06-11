@@ -13,12 +13,13 @@ class SendRegisterMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    
     /**
      * Create a new message instance.
      */
-    public function __construct($url)
+    public function __construct(public $urldata)
     {
-        $this->url = $url;
+       
     }
 
     /**
@@ -28,7 +29,7 @@ class SendRegisterMail extends Mailable
     {
         return new Envelope(
             subject: '仮登録完了のお知らせ',
-            from:'from@example.com',
+            from: 'hello@example.net',
         );
     }
 
@@ -38,7 +39,11 @@ class SendRegisterMail extends Mailable
     public function content(): Content    //本文設定　bladeで作成
     {
         return new Content(
-            html: 'emails.emailtemp',
+            view: 'emails.emailtemp',
+            with: [
+                'url' => $this->urldata['url']
+            ],
+            
         );
     }
 

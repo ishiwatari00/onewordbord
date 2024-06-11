@@ -25,7 +25,7 @@ class UserdataController extends Controller
         $token = uniqid(Hash::make($request['email']),true);
         $url = request()->getSchemeAndHttpHost()."/register?token=". $token;
 
-        $timelimit = now()->modify('+1minutes')->format("Y-m-d H:i:s");
+        $timelimit = now()->modify('+30minutes')->format("Y-m-d H:i:s");
 
         $tokensave = Tokensave::query()->create([
             'email'=>$request['email'],
@@ -33,8 +33,10 @@ class UserdataController extends Controller
             'timelimit'=>$timelimit,
         ]);
 
+        $urldata = ['url' => $url];
+
         Mail::to($request['email'])
-                ->send(new SendRegisterMail($url));
+                ->send(new SendRegisterMail($urldata));
 
         return view('emailsend',compact('url'));
         

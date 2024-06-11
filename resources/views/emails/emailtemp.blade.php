@@ -9,6 +9,8 @@
     </head>
     <body class = "background">
         <p>本登録はこちら</p>
-        <a href = "url">{{ url }}</a>
+        
+        <a href = "{{ $urldata['url'] }}">ここ</a>
+        
     </body>
 </html>

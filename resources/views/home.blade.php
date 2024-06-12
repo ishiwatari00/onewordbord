@@ -1,7 +1,7 @@
 <html>
     <style>
         .background{
-            background: #DCDCDC;
+            background: linear-gradient(rgb(204, 204, 204), rgb(238, 237, 237));
         }
         .span {
             color: green;
@@ -30,35 +30,78 @@
             border: solid 1px
         }
 
+        .ul_li{
+            list-style: none;
+            display:flex;
+            -webkit-justify-content:flex-start;
+            justify-content: flex-start;
+        }
+        .ul_li li:nth-of-type(n + 2) {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+        .ul_li li:nth-of-type(2) {
+            margin-left: auto;
+            margin-right: 10px;
+        }
+        
+        .aqua{
+            background: rgb(151, 211, 211);
+            padding: 0.1em;
+            margin-bottom : 20px;
+        }
+
+        .container{
+            display: flex;
+        }
+        .main{
+            width:70%;
+        }
+        .side{
+            width:30%;
+            border: solid 3px #c4c2c2;/*線色*/
+            padding: 0.5em;/*文字周りの余白*/
+            border-radius: 0.4em;/*角丸*/
+            margin-left:10px;
+        }
+
     </style>
+    
     <head>
-        <a href = "{{ url('/home') }}" >▶Home</a>
-        <a href = "{{ url('/mypage') }}" >▶mypage</a>
-        <a href = "{{ url('/logout') }}" >▶logout</a>
-        {{ Auth::user()->username; }}でログイン中
+        <script src="{{ asset('/js/searchregister.js') }}"></script>
+        <script src="https://kit.fontawesome.com/62cac18309.js" crossorigin="anonymous"></script>
         <meta charset="UTF-8">
     </head>
+   
     <body class = "background">
-        <script src="{{ asset('/js/searchregister.js') }}"></script>
+
         <header>
-            <h1>掲示板</h1>
+            <div class = "aqua">
+                <ul class = "ul_li">
+                    <li style = "font-size: 150%"><i class="fa-solid fa-pen"></i>&nbsp;掲示板</li>
+                    <li>{{ Auth::user()->username; }}でログイン中</li>
+                    <li><a href = "{{ url('/home') }}" ><i class="fa-solid fa-house"></i>Home</a></li>
+                    <li><a href = "{{ url('/mypage') }}" ><i class="fa-solid fa-user"></i>mypage</a></li>
+                    <li><a href = "{{ url('/logout') }}" ><i class="fa-solid fa-share-from-square"></i>logout</a></li>
+                </ul>
+            </div>
+        </header>
+            
             <!-- エラーメッセージ -->
                 @if (session('message'))
-                <div>
                 {{ session('message') }}
-                </div>
-                @endif
-                    <div>  
+                @endif  
                     @if ($errors->any())  
                     <ul>  
                         @foreach ($errors->all() as $error)  
                             <li>{{ $error }}</li>  
                         @endforeach  
                     </ul>  
-                    @endif  
-                    </div>
-                <!-- エラーメッセージend -->
+                    @endif
+            <!-- エラーメッセージend -->
 
+            <div class = "container">
+            <div class = "main">
                 <table style="margin-bottom:30px">
                 
                     <tr>
@@ -119,8 +162,6 @@
                 </tr>
                 </form>
                 </table>
-
-
 <!------------------------------------スレッド一覧---------------------------->
                 @foreach($threads as $thread)
                     <div class = "thread">
@@ -192,13 +233,16 @@
                         </dd>
                         </div>
                     </form>
-
             </div>
+            @endforeach
+        
      <!-- -------------------コメント表示↑----------------------------->
-                      
-                @endforeach
-                {{ $threads->appends(request()->query())->links('vendor.pagination.default')}}
-        </header>
-           
+            {{ $threads->appends(request()->query())->links('vendor.pagination.default')}}
+        </div>
+        
+        <div class = "side">
+            <p style ="text-align: center">急募：表示するもの</p>
+        </div>
+        </div>
     </body>
 </html>

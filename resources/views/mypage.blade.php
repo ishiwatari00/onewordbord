@@ -95,7 +95,7 @@
                     </form>
                     </div>
                     
-                    @if($thread->gender && $thread->address )
+                    @if($action == 'tweet')
                         @foreach($threadcmts as $threadcmt)
                             @if($thread->id == $threadcmt->hostid)
                             <div class = "thread2">

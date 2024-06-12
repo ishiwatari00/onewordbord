@@ -1,30 +1,33 @@
 <html>
     <style>
         .background{
-        background: #DCDCDC;
+            background: #DCDCDC;
         }
         .span {
-        color: green;
+            color: green;
         }
         .cmtform{
-        display: none;
+            display: none;
         }
         .thread {
-        border: solid 3px #c4c2c2;/*線色*/
-        padding: 0.5em;/*文字周りの余白*/
-        border-radius: 0.4em;/*角丸*/
-        margin-bottom : 5px;
-        padding-top : 15px;
-        padding-bottom : 20px;
+            border: solid 3px #c4c2c2;/*線色*/
+            padding: 0.5em;/*文字周りの余白*/
+            border-radius: 0.4em;/*角丸*/
+            margin-bottom : 5px;
+            padding-top : 15px;
+            padding-bottom : 20px;
         }
         .thread2 {
-        border: solid 3px #c4c2c2;/*線色*/
-        padding: 0.5em;/*文字周りの余白*/
-        border-radius: 0.4em;/*角丸*/
-        margin-bottom : 5px;
-        margin-left:50px;
-        padding-top : 15px;
-        padding-bottom : 20px;
+            border: solid 3px #c4c2c2;/*線色*/
+            padding: 0.5em;/*文字周りの余白*/
+            border-radius: 0.4em;/*角丸*/
+            margin-bottom : 5px;
+            margin-left:50px;
+            padding-top : 15px;
+            padding-bottom : 20px;
+        }
+        .sortbtn{
+            border: solid 1px
         }
 
     </style>
@@ -86,7 +89,7 @@
                     <td>住所 :</td>
                     <td>
                     <select name = "address">
-                    <option value = "">-未選択-</option>
+                    <option value = "">🏠未選択</option>
                         @foreach(config('allpref') as $pref_id => $pref)
                         <option value = "{{ $pref_id }}" @if(old('address') == $pref_id) selected @endif>{{ $pref }}</option>
                         @endforeach
@@ -100,7 +103,13 @@
                         <textarea name = "oneword" rows="5" cols="50">{{ old('oneword') }}</textarea>
                     </td>
                 </tr>
-                
+                <tr>
+                    <td>ソート：</td>
+                    <td style = "sortbtn">
+                    @sortablelink('bordname', '📛名前')
+                    @sortablelink('created_at', '📅日付')
+                    </td>                 
+                </tr>
                 <tr>
                     <td></td>
                     <td>

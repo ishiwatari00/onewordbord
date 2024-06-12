@@ -13,7 +13,7 @@ class ThreadController extends Controller
         
     public function index() {       //
         
-            $threads = Thread::
+            $threads = Thread::sortable()->
                 where([ ['bordname', '!=', null]])
                 ->orderBy('id', 'desc')
                 ->paginate(10);
@@ -30,21 +30,19 @@ class ThreadController extends Controller
                 ->orderBy('id', 'desc')
                 ->paginate(10);
 
-            $threadcmts = Threadcmt::
-            orderBy('id', 'desc')
-            ->paginate(10);;
+            $threadcmts = Threadcmt::all();
 
-            return view('mypage', ['threads' => $threads],['threadcmts' => $threadcmts]);
+            return view('mypage', ['threads' => $threads],['threadcmts' => $threadcmts])->with('action','tweet');
         }
 
-    public function mycmt() {       //マイページ表示のためのスレッド部分取得
+    public function mycmt() {       //マイページ表示のためのコメントのみ部分取得
 
             $threads = Threadcmt::
                 where([['userid', '=', Auth::id()]])
                 ->orderBy('id', 'desc')
                 ->paginate(10);
 
-            return view('mypage', ['threads' => $threads]);
+            return view('mypage', ['threads' => $threads])->with('action','cmt');
         }
 
 
@@ -84,7 +82,7 @@ class ThreadController extends Controller
                     $threadQuery->where('oneword', 'LIKE', "%{$request['oneword']}%");
                 }
 
-                $threads = $threadQuery->orderBy('id', 'desc')->paginate(10);
+                $threads = $threadQuery->sortable()->orderBy('id', 'desc')->paginate(10);
                 $threadcmts = Threadcmt::all();
 
 

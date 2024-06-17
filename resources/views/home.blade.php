@@ -6,7 +6,7 @@
         .span {
             color: green;
         }
-        .cmtform{
+        .formnone{
             display: none;
         }
         .thread {
@@ -64,12 +64,21 @@
             border-radius: 0.4em;/*角丸*/
             margin-left:10px;
         }
+        
+        .ul_memo{
+            list-style: none;
+        }
+        .form_memo{
+            display: flex;
+        }
 
     </style>
     
     <head>
         <script src="{{ asset('/js/searchregister.js') }}"></script>
         <script src="https://kit.fontawesome.com/62cac18309.js" crossorigin="anonymous"></script>
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta charset="UTF-8">
     </head>
    
@@ -78,7 +87,7 @@
         <header>
             <div class = "aqua">
                 <ul class = "ul_li">
-                    <li style = "font-size: 150%"><i class="fa-solid fa-pen"></i>&nbsp;掲示板</li>
+                    <li style = "font-size: 150%"><i class="fa-solid fa-kiwi-bird"></i>&nbsp;掲示板</li>
                     <li>{{ Auth::user()->username; }}でログイン中</li>
                     <li><a href = "{{ url('/home') }}" ><i class="fa-solid fa-house"></i>Home</a></li>
                     <li><a href = "{{ url('/mypage') }}" ><i class="fa-solid fa-user"></i>mypage</a></li>
@@ -182,6 +191,9 @@
                             
                             {{ $thread->created_at }}
                             <button onclick = "commentonoff({{ $thread->id }})">💬</button>
+
+                            @if($thread->userid == Auth::id())
+                            @endif
                         </dt>
                         <dd>
                             {{ $thread->oneword }}
@@ -189,7 +201,7 @@
                     </div>
 
     <!-- -------------------コメント表示----------------------------->
-            <div id = "cmtform{{ $thread->id }}" class = "cmtform">
+            <div id = "cmtform{{ $thread->id }}" class = "formnone">
 
                 <!--コメントがあったらここに-->
                         @foreach($threadcmts as $threadcmt)
@@ -225,7 +237,7 @@
                                         <textarea name = "oneword" rows="5" cols="35"></textarea>
                                     </td>
                                     <td>
-                                        <button id = "commentbtn">送信💬</button>
+                                        <button>送信💬</button>
                                     </td>
                                     <input type = "hidden" name = "hostid" value = "{{ $thread->id }}"></input>
                                 </tr>
@@ -240,9 +252,52 @@
             {{ $threads->appends(request()->query())->links('vendor.pagination.default')}}
         </div>
         
-        <div class = "side">
-            <p style ="text-align: center">急募：表示するもの</p>
-        </div>
+    <!-- -------------------サイドバー↓----------------------------->
+        <div id = "sidebar" class = "side">
+            
+                <p style ="text-align: center">メモ</p>
+
+                    <form id = "memoform">
+                        @csrf
+                        <table>
+                            <tr>
+                                <td>ID :</td>
+                                <td>
+                                <textarea name = "hostid" rows="1" cols="10"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>メモ :</td>
+                                <td>
+                                    <textarea name = "oneword" rows="5" cols="50"></textarea>
+                                </td>
+                                <td>
+                                    <button>保存<i class="fa-solid fa-pen"></i></button>
+                                </td>
+                            </tr>
+                            <input type = "hidden" name = "userid" value = "{{ Auth::id() }}"></input>
+                        </table>
+                    </form>
+
+                    <ul id = "memotable" class = "ul_memo">
+                    @foreach($memos as $memo)
+                        <li>
+                        <div id = "memo{{$memo->id}}" class = "form_memo">
+                            <form id = "memoedit">                         
+                                <button class="fa-solid fa-pen"></button>
+                                <input type = "hidden" name = "id" value = "{{ $memo->id }}"></input>
+                                <input type = "hidden" name = "userid" value = "{{ $memo->userid }}"></input>
+                            </form>
+                            <form id = "memodelete">
+                                <button class="fa-solid fa-trash-can"></button>
+                                <input type = "hidden" name = "id" value = "{{ $memo->id }}"></input>
+                                <input type = "hidden" name = "userid" value = "{{ $memo->userid }}"></input>
+                                >> {{ $memo->hostid }} <span id = "memoone" contentEditable="true">{{ $memo->oneword }} </span>
+                            </form>
+                        </div>
+                        </li>
+                    @endforeach
+                    <ul>     
         </div>
     </body>
 </html>

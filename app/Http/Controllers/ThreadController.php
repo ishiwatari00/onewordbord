@@ -5,22 +5,26 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Thread;
 use App\Models\Threadcmt;
+use App\Models\Memo;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 
 class ThreadController extends Controller
     {
         
-    public function index() {       //
+    public function index() {       //home表示
         
             $threads = Thread::sortable()->
                 where([ ['bordname', '!=', null]])
                 ->orderBy('id', 'desc')
                 ->paginate(10);
-
+    
             $threadcmts = Threadcmt::all();
 
-            return view('home', ['threads' => $threads],['threadcmts' => $threadcmts]);
+            $memos = Memo::where([['userid', '=', Auth::id()]])->orderBy('hostid', 'desc')->get();
+            
+            return view('home', ['threads' => $threads,'threadcmts' => $threadcmts,'memos' => $memos]);
+
         }
 
     public function mypage() {       //マイページ表示のためのスレッド部分取得
@@ -89,7 +93,7 @@ class ThreadController extends Controller
                 }catch(Exception $e){
                     abort(404);
                 }
-                return view('home', ['threads' => $threads],['threadcmts' => $threadcmts]);
+                return view('home', ['threads' => $threads,'threadcmts' => $threadcmts]);
             
         }
 
@@ -149,6 +153,36 @@ class ThreadController extends Controller
                 return redirect('home')->with('message', '投稿出来ませんでした');
                 }
             }
+
+public function addmemo(Request $request){ //メモ登録した時のDB登録
+
+            $request->validate([
+                'hostid' => 'required|exists:threads,id|unique:memos,hostid|integer',
+                'oneword' => 'required|max:100|String',
+                'userid' => 'required|integer|exists:userdatas,id',
+            ]);
+            
+            $memo = new Memo();
+            $memo->hostid = $request->input('hostid');
+            $memo->oneword = $request->input('oneword');
+            $memo->userid = Auth::id();
+
+            try{
+            $result = $memo->save();
+            }catch(Exception $e){
+                abort(404);
+            }
+
+            if($result){
+                $id = $memo->id;
+                $hostid = $request->input('hostid');
+                $oneword = $request->input('oneword');
+                $userid = $request->input('userid');
+                return response()->json(['id' => $id,'hostid' => $hostid,'oneword' => $oneword,'id' => $id,'userid' => $userid]);   
+            }
+        }
+
+            
             
 
     public function edit(Request $request){  //編集画面にIDを送る
@@ -242,6 +276,34 @@ class ThreadController extends Controller
             }
         }
 
+        public function memoedit(Request $request){  //メモ編集(DBへアップデート)
+            
+            $request->validate([
+                'id' => 'required|integer|exists:memos,id',
+                'oneword' => 'required|max:100|String',
+                'userid' => 'required|integer|exists:userdatas,id',
+            ]);
+
+            if($request['userid'] == Auth::id()){
+
+                try{
+                $result = Memo::where('id', '=', $request['id'])
+                ->update([
+                    'oneword' => $request['oneword']
+                ]);
+                }catch(Exception $e){
+                    abort(404);
+                }
+
+                if($result != 0){
+                    return response()->json(['oneword' => $oneword]);
+                }
+            
+            }else{
+                abort(404);
+            }
+        }
+
         
     public function deletecheck(Request $request){ //削除データ確認画面
 
@@ -320,5 +382,32 @@ class ThreadController extends Controller
             }
         }
 
+public function memodelete(Request $request){ //削除メモ
+
+            $request->validate([
+                'id' => 'required|integer|exists:memos,id',
+            ]);
+
+            if($request['userid'] == Auth::id()){
+
+                $id = $request['id'];
+
+                try{
+                $result = Memo::destroy($request['id']);
+
+                }catch(Exception $e){
+                    abort(404);
+                }
+
+                if($result = 1){
+                    return response()->json(['id' => $id]);   
+                }else{
+
+                }
+
+            }else{
+                abort(404);
+            }
+        }
     
 }

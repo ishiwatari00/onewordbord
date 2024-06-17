@@ -138,6 +138,7 @@ class UserdataController extends Controller
             $request->validate([
                 'id' => 'integer|exists:userdatas,id',
                 'username' => 'required|max:30|String|unique:userdatas,username,' . Auth::user()->username . ',username',
+                'email' => 'required|unique:userdatas,email|email|max:50|String',
                 'password' => 'required|min:4|max:30|String',
             ]);
 
@@ -147,6 +148,7 @@ class UserdataController extends Controller
                 $result = Userdata::where('id', '=', $request['id'])
                 ->update([
                     'username' => $request['username'],
+                    'email' => $request['email'],
                     'password'=>Hash::make($request['password']),
                 ]);
                 }catch(Exception $e){

@@ -16,10 +16,13 @@ Route::controller(ThreadController::class)->middleware(['auth'])->group(function
     Route::get('/editcmt', 'editcmt');                //編集確認 コメント
     Route::post('/editcomp', 'editcomp');             //編集
     Route::post('/editcmtcomp', 'editcmtcomp');       //編集コメント
+    Route::post('/addmemo', 'addmemo');             //メモ追加
+    Route::post('/memoedit', 'memoedit');         //メモ編集
+    Route::post('/memodelete', 'memodelete');         //メモ抹殺
     Route::get('/deletecheck', 'deletecheck');        //削除前確認
     Route::get('/deletecmtcheck', 'deletecmtcheck');  //削除前確認　コメント
     Route::post('/delete', 'delete');                 //削除
-    Route::post('/deletecmt', 'deletecmt');           //削除
+    Route::post('/deletecmt', 'deletecmt');           //削除コメント
 
 });
 

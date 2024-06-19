@@ -72,6 +72,11 @@
             display: flex;
         }
 
+        .btnhover:hover {
+        background-color:plum;
+        cursor: pointer;
+        }
+
     </style>
     
     <head>
@@ -165,8 +170,8 @@
                 <tr>
                     <td></td>
                     <td>
-                        <input type = "submit" value = "投稿📝" id = "tweetbtn" onclick = 'formchange("post","tweet")' style = "display: none"></input>
-                        <input type = "submit" value = "検索🔍" id = "searchbtn" onclick = 'formchange("get","search")' style = "display: none"></input>
+                        <input type = "submit" class = "btnhover" value = "投稿📝" id = "tweetbtn" onclick = 'formchange("post","tweet")' style = "display: none"></input>
+                        <input type = "submit" class = "btnhover" value = "検索🔍" id = "searchbtn" onclick = 'formchange("get","search")' style = "display: none"></input>
                     </td>
                 </tr>
                 </form>
@@ -190,7 +195,7 @@
                             @endforeach&emsp;
                             
                             {{ $thread->created_at }}
-                            <button onclick = "commentonoff({{ $thread->id }})">💬</button>
+                            <button class = "btnhover" onclick = "commentonoff({{ $thread->id }})">💬</button>
 
                             @if($thread->userid == Auth::id())
                             @endif
@@ -237,7 +242,7 @@
                                         <textarea name = "oneword" rows="5" cols="35"></textarea>
                                     </td>
                                     <td>
-                                        <button>送信💬</button>
+                                        <button class = "btnhover">送信💬</button>
                                     </td>
                                     <input type = "hidden" name = "hostid" value = "{{ $thread->id }}"></input>
                                 </tr>
@@ -272,7 +277,7 @@
                                     <textarea name = "oneword" rows="5" cols="50"></textarea>
                                 </td>
                                 <td>
-                                    <button>保存<i class="fa-solid fa-pen"></i></button>
+                                    <button class = "btnhover">保存<i class="fa-solid fa-pen"></i></button>
                                 </td>
                             </tr>
                             <input type = "hidden" name = "userid" value = "{{ Auth::id() }}"></input>
@@ -283,16 +288,13 @@
                     @foreach($memos as $memo)
                         <li>
                         <div id = "memo{{$memo->id}}" class = "form_memo">
-                            <form id = "memoedit">                         
-                                <button class="fa-solid fa-pen"></button>
+                            <form id = "memoform">                         
+                                <button class="fa-solid fa-floppy-disk btnhover" value = "edit" name = "{{ $memo->id }}"></button>
+                                <button class="fa-solid fa-trash-can btnhover" value = "delete" name = "{{ $memo->id }}"></button>
+                                <input type = "hidden" id="memobtn" value="" name = ""></input>
                                 <input type = "hidden" name = "id" value = "{{ $memo->id }}"></input>
                                 <input type = "hidden" name = "userid" value = "{{ $memo->userid }}"></input>
-                            </form>
-                            <form id = "memodelete">
-                                <button class="fa-solid fa-trash-can"></button>
-                                <input type = "hidden" name = "id" value = "{{ $memo->id }}"></input>
-                                <input type = "hidden" name = "userid" value = "{{ $memo->userid }}"></input>
-                                >> {{ $memo->hostid }} <span id = "memoone" contentEditable="true">{{ $memo->oneword }} </span>
+                                >> {{ $memo->hostid }} <span id = "memoone{{ $memo->id }}" contentEditable="true">{{ $memo->oneword }}</span>
                             </form>
                         </div>
                         </li>

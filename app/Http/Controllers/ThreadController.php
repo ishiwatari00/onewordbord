@@ -36,7 +36,7 @@ class ThreadController extends Controller
 
             $threadcmts = Threadcmt::all();
 
-            return view('mypage', ['threads' => $threads],['threadcmts' => $threadcmts])->with('action','tweet');
+            return view('mypage', ['threads' => $threads,'threadcmts' => $threadcmts])->with('action','tweet');
         }
 
     public function mycmt() {       //マイページ表示のためのコメントのみ部分取得
@@ -89,11 +89,13 @@ class ThreadController extends Controller
                 $threads = $threadQuery->sortable()->orderBy('id', 'desc')->paginate(10);
                 $threadcmts = Threadcmt::all();
 
+                $memos = Memo::where([['userid', '=', Auth::id()]])->orderBy('hostid', 'desc')->get();
+
 
                 }catch(Exception $e){
                     abort(404);
                 }
-                return view('home', ['threads' => $threads,'threadcmts' => $threadcmts]);
+                return view('home', ['threads' => $threads,'threadcmts' => $threadcmts,'memos' => $memos]);
             
         }
 
@@ -296,6 +298,7 @@ public function addmemo(Request $request){ //メモ登録した時のDB登録
                 }
 
                 if($result != 0){
+                    $oneword = $request['oneword'];
                     return response()->json(['oneword' => $oneword]);
                 }
             
